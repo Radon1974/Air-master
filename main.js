@@ -335,6 +335,7 @@ var Max_Carrefour = 50;
 var Max_Carrefour_Pilote = 50;
 var Max_Memoire = 20;
 var Max_Sequenceur = 5;
+var Max_Valve = 30;
 var Max_Texte = 80;
 var Coef = 1.2;
 var VHauteur = 35 * Coef;//Высота элемента
@@ -374,6 +375,7 @@ var Capteur = [];
 var Carrefour = [];
 var Carrefour_Pilote = [];
 var Memoire = [];
+var Valve = [];
 var Texte = [];
 var T_Parcours = [];
 var Les_points = [];
@@ -385,10 +387,10 @@ var Str16 = ''; //Можно убрать
 //Переменные
 var Nb_Verin = 0, Nb_Distributeur = 0, Nb_Commande = 0, Nb_Canal = 0, Nb_Alimentation = 0, Nb_Capteur = 0;
 var Nb_Alim_Pilote = 0, Nb_Canal_Pilote = 0, Nb_Carrefour = 0, Nb_Carrefour_Pilote = 0, Nb_Memoire = 0;
-var Nb_Sequenceur = 0, Nb_Texte = 0, G_Pour = 0, G_K = 0, X_s = 0, Y_s = 0, Nb_Point = 0;
+var Nb_Sequenceur = 0, Nb_Valve = 0, Nb_Texte = 0, G_Pour = 0, G_K = 0, X_s = 0, Y_s = 0, Nb_Point = 0;
 var Vieux_Nb_Verin = 0, Vieux_Nb_Distributeur = 0, Vieux_Nb_Capteur = 0, Vieux_Nb_Alim = 0;
 var Vieux_Nb_Alim_Pilote = 0, Vieux_Nb_Carrefour = 0, Vieux_Nb_Carrefour_Pilote = 0, Vieux_Nb_Commande = 0;
-var Vieux_Nb_Canal = 0, Vieux_Nb_Canal_Pilote = 0, Vieux_Nb_Memoire = 0, Vieux_Nb_Sequenceur = 0, Vieux_Nb_Texte = 0;
+var Vieux_Nb_Canal = 0, Vieux_Nb_Canal_Pilote = 0, Vieux_Nb_Memoire = 0, Vieux_Nb_Sequenceur = 0, Vieux_Nb_Valve = 0, Vieux_Nb_Texte = 0;
 var Heur = 0, Minute = 0, Seconde = 0, Sec100 = 0;
 
 var Gauche = true, Droite = true, SVG = true, Immonde_rustine_double_v = true, Immonde_rustine_galet_v = true;
@@ -404,10 +406,10 @@ var Pointe_Quoi = '', timerId = 0;
 
 
 function NewDistributeur(i) {
-  //for (let i = 1; i <= Max_Distributeur; i++) {
+  
   Distributeur[i] = {
-    X: 0,
-    Y: 0,
+    X: 0,       //Координата X гидрораспределителя
+    Y: 0,       //Координата Y гидрораспределителя
     Etat_Ext: [],
     ExtX: [],   //Координата X точки присоединения к распределителю 
     ExtY: [],   //Координата Y точки присоединения к распределителю 
@@ -424,11 +426,11 @@ function NewDistributeur(i) {
     Modele: '',   ////Модель распределителя
     Etat: 0   //Положение распределителя 1 или 2
   }
-  //}
+  
 }
 
 function NewSequenceur(i) {
-  //for (let i = 1; i <= Max_Sequenceur; i++) {
+  
   Sequenceur[i] = {
     X: 0,
     Y: 0,
@@ -439,11 +441,11 @@ function NewSequenceur(i) {
     Etat: 0,
     Combien: 0
   }
-  //}
+  
 }
 
 function NewVerin(i) {
-  //for (let i = 1; i <= Max_Verin; i++) {
+  
   Verin[i] = {
     X: 0,
     Y: 0,
@@ -453,22 +455,22 @@ function NewVerin(i) {
     EntreeY: [],
     Modele: ''
   }
-  //}
+  
 }
 
 function NewCommande(i) {
-  //for (let i = 1; i <= Max_Commande; i++) {
+  
   Commande[i] = {
     X: 0,
     Y: 0,
     Etat: 0,
     Modele: ''
   }
-  //}
+  
 }
 
 function NewCanal(i) {
-  //for (let i = 1; i <= Max_Canal; i++) {
+  
   Canal[i] = {
     X: 0,
     Y: 0,
@@ -490,11 +492,11 @@ function NewCanal(i) {
       Branchement: 0
     }]
   }
-  //}
+  
 }
 
 function NewCanal_Pilote(i) {
-  //for (let i = 1; i <= Max_Canal_Pilote; i++) {
+  
   Canal_Pilote[i] = {
     X: 0,
     Y: 0,
@@ -516,29 +518,29 @@ function NewCanal_Pilote(i) {
       Branchement: 0
     }]
   }
-  //}
+  
 }
 
 function NewAliMentation(i) {
-  //for (let i = 1; i <= Max_Alimentation; i++) {
+  
   AliMentation[i] = {
     X: 0,
     Y: 0
   }
-  //}
+  
 }
 
 function NewAlim_Pilote(i) {
-  //for (let i = 1; i <= Max_Alimentation; i++) {
+  
   Alim_Pilote[i] = {
     X: 0,
     Y: 0
   }
-  //}
+  
 }
 
 function NewCapteur(i) {
-  //for (let i = 1; i <= Max_Capteur; i++) {
+  
   Capteur[i] = {
     X: 0,
     Y: 0,
@@ -550,31 +552,31 @@ function NewCapteur(i) {
     Lie_a: 0,
     Position: 0
   }
-  //}
+  
 }
 
 function NewCarrefour(i) {
-  //for (let i = 1; i <= Max_Carrefour; i++) {
+  
   Carrefour[i] = {
     X: 0,
     Y: 0,
     Etat: 0
   }
-  //}
+  
 }
 
 function NewCarrefour_Pilote(i) {
-  //for (let i = 1; i <= Max_Carrefour; i++) {
+  
   Carrefour_Pilote[i] = {
     X: 0,
     Y: 0,
     Etat: 0
   }
-  //}
+  
 }
 
 function NewMemoire(i) {
-  //for (let i = 1; i <= Max_Memoire; i++) {
+  
   Memoire[i] = {
     X: 0,
     Y: 0,
@@ -583,18 +585,32 @@ function NewMemoire(i) {
     ExtY: [],
     Etat: 0
   }
-  //}
+  
+}
+
+function NewValve(i) {
+  
+    Valve[i] = {
+      X: 0,           //Координата X запорной арматуры
+      Y: 0,           //Координата Y запорной арматуры
+      Etat_Ext: [],   //Количество точек подключения
+      Etat: [],       //Состояние запорной арматуры 1 - открыта, 2 - закрыта
+      EntreeX: [],    //Координата X точки подключения
+      EntreeY: [],    //Координата Y точки подключения
+      Modele: ''      //Тип запорной арматуры
+  }
+  
 }
 
 function NewTexte(i) {
-  //for (let i = 1; i <= Max_Texte; i++) {
+  
   Texte[i] = {
     X: 0,
     Y: 0,
     Lataille: 0,
     Le_Texte: ''
   }
-  //}
+  
 }
 
 
@@ -609,3 +625,39 @@ var Branche2 = {
   Branchement: 0
 }
 
+
+
+//Примеры
+//X=120;
+//Y=100;
+//Кран закрытый
+//Triangle2(X-20, Y+10, X-20, Y-10, X, Y, true);
+//Triangle2(X+20, Y+10, X+20, Y-10, X, Y, true);
+//Ligne(X-20, Y, X-30, Y);
+//Ligne(X+20, Y, X+30, Y);
+
+//X=50;
+//Y=100;
+//Кран открытый
+//Triangle2(X-20, Y+10, X-20, Y-10, X, Y, false);
+//Triangle2(X+20, Y+10, X+20, Y-10, X, Y, false);
+//Ligne(X-20, Y, X-30, Y);
+//Ligne(X+20, Y, X+30, Y);
+
+//X=200;
+//Y=100;
+//Обратный клапан закрытый
+//Ligne(X-7, Y, X, Y-8);
+//Ligne(X-7, Y, X, Y+8);
+//Cercle(X, Y, 5);
+//Ligne(X-7, Y, X-15, Y);
+//Ligne(X+5, Y, X+15, Y);
+
+//X=250;
+//Y=100;
+//Обратный клапан открытый
+//Ligne(X-7, Y, X, Y-8);
+//Ligne(X-7, Y, X, Y+8);
+//Cercle(X+5, Y, 5);
+//Ligne(X-7, Y, X-15, Y);
+//Ligne(X+10, Y, X+15, Y);

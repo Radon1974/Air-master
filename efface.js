@@ -25,10 +25,10 @@ function Effacer() {  //
  
   var On_Efface = false;
 
-
+//Очистка вместе с компонентом силовых каналов
     Pointe_Quoi = Objet2;
     if (Pointe_Quoi == 'Rien') { return false }
-    if (['Une_Alim', 'Un_Carrefour', 'Un_D', 'Un_V'].includes(Pointe_Quoi)) {
+    if (['Une_Alim', 'Un_Carrefour', 'Un_D', 'Un_V', 'Un_Valve'].includes(Pointe_Quoi)) {
       Pour = 1;
       while (Pour <= Nb_Canal) {
         On_Efface = false;
@@ -41,7 +41,7 @@ function Effacer() {  //
         if (On_Efface) { Efface_Canal(Pour) } else { Pour++ }
       }
     }
-
+//Очистка вместе с компонентом каналов управления
     if (['Une_Alim_Pilote', 'Un_Carrefour_Pilote', 'Un_Cap', 'Un_D', 'Une_Memoire', 'Un_Sequenceur'].includes(Pointe_Quoi)) {
 
       Pour = 1;
@@ -56,7 +56,7 @@ function Effacer() {  //
         if (On_Efface) { Efface_Canal_Pilote(Pour) } else { Pour++ }
       }
     }
-
+//Очистка самих компонентов
     if (Pointe_Quoi == 'Un_Canal') {
       Efface_Canal(Celui_La2);
     } else {
@@ -102,6 +102,11 @@ function Effacer() {  //
                           if (Pointe_Quoi == 'Un_Carrefour_Pilote') {
                             for (let Pour = Celui_La2; Pour <= Nb_Carrefour_Pilote - 1; Pour++) { Carrefour_Pilote[Pour] = Carrefour_Pilote[Pour + 1] }
                             Nb_Carrefour_Pilote--;
+                          } else {
+                            if (Pointe_Quoi == 'Un_Valve') {
+                              for (let Pour = Celui_La2; Pour <= Nb_Valve - 1; Pour++) { Valve[Pour] = Valve[Pour + 1] }
+                              Nb_Valve--;
+                            }
                           }
                         }
                       }

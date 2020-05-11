@@ -207,6 +207,17 @@ function Triangle(X, Y) {
   Ligne(X + Cote, Y, X, Y + Cote * 1.7);
 }
 
+//Рисование треугольника 2
+function Triangle2(X1, Y1, X2, Y2, X3, Y3, Blanc) {
+  ctx.beginPath();
+  ctx.moveTo(X1 * Facteur, Y1 * Facteur);
+  ctx.lineTo(X2 * Facteur, Y2 * Facteur);
+  ctx.lineTo(X3 * Facteur, Y3 * Facteur);
+  ctx.lineTo(X1 * Facteur, Y1 * Facteur);
+  if (Blanc) { ctx.fill() }
+  ctx.stroke();
+}
+
 //var SaveF = {        //Для примера
 //  "myKey": "Привет!"
 //};
@@ -243,7 +254,7 @@ document.getElementById("dlbtn").onclick = function () {
   var SaveF = Save1Click()
   var json = JSON.stringify(SaveF); // test -> localStorage
   var dlbtn = document.getElementById("dlbtn");
-  var file = new Blob([json], {type: 'text/plain'});
+  var file = new Blob([json], { type: 'text/plain' });
   dlbtn.href = URL.createObjectURL(file);
   dlbtn.download = document.getElementById("selName").value + '.json';  //dlbtn.download = 'simulator.json'; 
 }
@@ -264,6 +275,7 @@ function Save1Click() {
     'Nb_Carrefour_Pilote': Nb_Carrefour_Pilote,
     'Nb_Memoire': Nb_Memoire,
     'Nb_Sequenceur': Nb_Sequenceur,
+    'Nb_Valve': Nb_Valve,
     'Nb_Texte': Nb_Texte,
 
     'Verin': Verin,
@@ -278,6 +290,7 @@ function Save1Click() {
     'Carrefour_Pilote': Carrefour_Pilote,
     'Memoire': Memoire,
     'Sequenceur': Sequenceur,
+    'Valve': Valve,
     'Texte': Texte
   };
 
@@ -287,32 +300,34 @@ function Save1Click() {
 //Открытие файла
 function Load1Click(LoadF) {
   Nb_Verin = LoadF['Nb_Verin'],
-  Nb_Distributeur = LoadF['Nb_Distributeur'],
-  Nb_Commande = LoadF['Nb_Commande'],
-  Nb_Canal = LoadF['Nb_Canal'],
-  Nb_Canal_Pilote = LoadF['Nb_Canal_Pilote'],
-  Nb_Alimentation = LoadF['Nb_Alimentation'],
-  Nb_Capteur = LoadF['Nb_Capteur'],
-  Nb_Alim_Pilote = LoadF['Nb_Alim_Pilote'],
-  Nb_Carrefour = LoadF['Nb_Carrefour'],
-  Nb_Carrefour_Pilote = LoadF['Nb_Carrefour_Pilote'],
-  Nb_Memoire = LoadF['Nb_Memoire'],
-  Nb_Sequenceur = LoadF['Nb_Sequenceur'],
-  Nb_Texte = LoadF['Nb_Texte'],
+    Nb_Distributeur = LoadF['Nb_Distributeur'],
+    Nb_Commande = LoadF['Nb_Commande'],
+    Nb_Canal = LoadF['Nb_Canal'],
+    Nb_Canal_Pilote = LoadF['Nb_Canal_Pilote'],
+    Nb_Alimentation = LoadF['Nb_Alimentation'],
+    Nb_Capteur = LoadF['Nb_Capteur'],
+    Nb_Alim_Pilote = LoadF['Nb_Alim_Pilote'],
+    Nb_Carrefour = LoadF['Nb_Carrefour'],
+    Nb_Carrefour_Pilote = LoadF['Nb_Carrefour_Pilote'],
+    Nb_Memoire = LoadF['Nb_Memoire'],
+    Nb_Sequenceur = LoadF['Nb_Sequenceur'],
+    Nb_Valve = LoadF['Nb_Valve'],
+    Nb_Texte = LoadF['Nb_Texte'],
 
-  Verin = LoadF['Verin'],
-  Distributeur = LoadF['Distributeur'],
-  Commande = LoadF['Commande'],
-  Canal = LoadF['Canal'],
-  Canal_Pilote = LoadF['Canal_Pilote'],
-  AliMentation = LoadF['AliMentation'],
-  Capteur = LoadF['Capteur'],
-  Alim_Pilote = LoadF['Alim_Pilote'],
-  Carrefour = LoadF['Carrefour'],
-  Carrefour_Pilote = LoadF['Carrefour_Pilote'],
-  Memoire = LoadF['Memoire'],
-  Sequenceur = LoadF['Sequenceur'],
-  Texte = LoadF['Texte']
+    Verin = LoadF['Verin'],
+    Distributeur = LoadF['Distributeur'],
+    Commande = LoadF['Commande'],
+    Canal = LoadF['Canal'],
+    Canal_Pilote = LoadF['Canal_Pilote'],
+    AliMentation = LoadF['AliMentation'],
+    Capteur = LoadF['Capteur'],
+    Alim_Pilote = LoadF['Alim_Pilote'],
+    Carrefour = LoadF['Carrefour'],
+    Carrefour_Pilote = LoadF['Carrefour_Pilote'],
+    Memoire = LoadF['Memoire'],
+    Sequenceur = LoadF['Sequenceur'],
+    Valve = LoadF['Valve'],
+    Texte = LoadF['Texte']
 
 }
 

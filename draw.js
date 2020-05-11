@@ -11,6 +11,7 @@ function Raz() {
   for (let i = 1; i <= Nb_Verin; i++) { for (let k = 1; k <= 2; k++) { Verin[i].Etat_Ext[k] = 0 } }
   for (let i = 1; i <= Nb_Carrefour; i++) { Carrefour[i].Etat = Zero }
   for (let i = 1; i <= Nb_Carrefour_Pilote; i++) { Carrefour_Pilote[i].Etat = Bof }
+  for (let i = 1; i <= Nb_Valve; i++) { for (let k = 1; k <= 2; k++) { Valve[i].Etat_Ext[k] = 0 } }   //Проверить
 }
 
 //Старый обнуление
@@ -27,6 +28,7 @@ function Raz_Vieux() {
   Vieux_Nb_Canal = 0;
   Vieux_Nb_Memoire = 0;
   Vieux_Nb_Sequenceur = 0;
+  Vieux_Nb_Valve = 0;
 }
 
 //Большое обнуление
@@ -35,7 +37,7 @@ function Super_Raz() {
   Raz_Vieux();
   Raz();
 
-for (let Pour = 1; Pour <= Nb_Canal; Pour++) {  //for (let Pour = 1; Pour <= Max_Canal; Pour++) {
+  for (let Pour = 1; Pour <= Nb_Canal; Pour++) {  //for (let Pour = 1; Pour <= Max_Canal; Pour++) {
     for (let K = 1; K <= 2; K++) {
       Canal[Pour].Etat = Zero;
       Canal[Pour].Bout[K].Quoi = 'Rien';
@@ -51,7 +53,7 @@ for (let Pour = 1; Pour <= Nb_Canal; Pour++) {  //for (let Pour = 1; Pour <= Max
 
   for (let Pour = 1; Pour <= Nb_Distributeur; Pour++) { for (let K = -1; K <= 5; K++) { Distributeur[Pour].Etat_Ext[K] = 0 } }  //for (let Pour = 1; Pour <= Max_Distributeur; Pour++) { for (let K = -1; K <= 5; K++) { Distributeur[Pour].Etat_Ext[K] = 0 } }
   for (let Pour = 1; Pour <= Nb_Capteur; Pour++) { Capteur[Pour].Etat = 0 }  //for (let Pour = 1; Pour <= Max_Capteur; Pour++) { Capteur[Pour].Etat = 0 } 
-  
+
 
   Nb_Verin = 0;
   Nb_Distributeur = 0;
@@ -65,8 +67,9 @@ for (let Pour = 1; Pour <= Nb_Canal; Pour++) {  //for (let Pour = 1; Pour <= Max
   Nb_Carrefour_Pilote = 0;
   Nb_Memoire = 0;
   Nb_Sequenceur = 0;
+  Nb_Valve = 0;
   Nb_Texte = 0;
-  
+
 }
 
 //Отображение времени
@@ -341,7 +344,7 @@ function Affiche_Verin(Numero, C, Blanc) {  //Numero - номер гидроци
   }
 
   Couleur('#FFFFFF');
- 
+
 
 }
 
@@ -434,7 +437,7 @@ function Affiche_Memoire(Numero, C, Blanc) {  //Numero номер, C - цвет,
   var Coul = '';
   var Pour = 0;
 
-  
+
   Couleur(C);
 
   if (C == '#FFFFFF') { Coul = '#FFFFFF' } else { Coul = '#FF00FF' }
@@ -452,7 +455,7 @@ function Affiche_Memoire(Numero, C, Blanc) {  //Numero номер, C - цвет,
   NPave(Memoire[Numero].X + Dmemoire / 2, Memoire[Numero].Y + 1 / 4 * Dmemoire, Coul);
 
   Couleur('#000000'); //Черный
-  
+
 }
 
 
@@ -627,7 +630,7 @@ function Affiche_Capteur(Numero, C, Blanc) {  //Numero- номер, C - цвет
   }
 
 
-  
+
   if (!Blanc) { Couleur(C) } else { Couleur('#000000') } //Черный
   Couleur(C);
 
@@ -676,7 +679,7 @@ function Affiche_Capteur(Numero, C, Blanc) {  //Numero- номер, C - цвет
       break;
   }
   Couleur('#000000');
-  
+
 }
 
 
@@ -684,12 +687,12 @@ function Affiche_Capteur(Numero, C, Blanc) {  //Numero- номер, C - цвет
 
 
 
-//Создать автомат
+//Создать гидрораспределитель
 function Cree_Distributeur(XC, YC, Modelec, Commande1, Commande2, L_Etat) {
   //XC,YC - координаты, Modelec - модель, Commande1,Commande2 - тип толкателя, L_Etat - 
   Nb_Distributeur++;
   NewDistributeur(Nb_Distributeur);
-  
+
   Distributeur[Nb_Distributeur].X = XC;
   Distributeur[Nb_Distributeur].Y = YC;
 
@@ -757,9 +760,9 @@ function Cree_Distributeur(XC, YC, Modelec, Commande1, Commande2, L_Etat) {
   Commande[Nb_Commande].Etat = L_Etat;
   Distributeur[Nb_Distributeur].Com[2].Quoi = Commande2;
   Distributeur[Nb_Distributeur].Com[2].Laquelle = Nb_Commande;
-  
+
 }
-//Отобразить автомат
+//Отобразить гидрораспределитель
 function Affiche_Distributeur(Numero, C, Blanc) {
   //Numero - номер, C - цвет, Blanc - отображать или нет
   var Coul = '';
@@ -881,7 +884,7 @@ function Affiche_Distributeur(Numero, C, Blanc) {
   }
 
 
-  
+
   if (!Blanc) { Couleur(C) } else { Couleur('#000000') } //Черный
   Couleur(C);
 
@@ -971,7 +974,7 @@ function Affiche_Distributeur(Numero, C, Blanc) {
   }
 
   Couleur('#000000');
-  
+
 }
 
 
@@ -989,12 +992,12 @@ function Affiche_Canal(Numero, Blanc) {  //
   if (!Blanc) { if (Canal[Numero].Etat == Un) { Couleur('#FF0000') } else { Couleur('#000000') } } else { Couleur('#000000') }
   Xe = Canal[Numero].ParcoursX[1];
   Ye = Canal[Numero].ParcoursY[1];
- 
+
   for (let Pour = 2; Pour <= Canal[Numero].NbPoint; Pour++) {
     Ligne(Xe, Ye, Canal[Numero].ParcoursX[Pour], Canal[Numero].ParcoursY[Pour]);
     Xe = Canal[Numero].ParcoursX[Pour];
     Ye = Canal[Numero].ParcoursY[Pour];
-    
+
   }
 
   Couleur('#000000');
@@ -1067,7 +1070,7 @@ function Affiche_Carrefour_Pilote(Numero, Blanc) {  //
 //Отобразить текст
 function Affiche_Texte(Numero, C) {  //
   Couleur(C);
-  ctx.font = (Math.round(Texte[Numero].Lataille * 8 * Facteur) + 4) + 'px Arial';   
+  ctx.font = (Math.round(Texte[Numero].Lataille * 8 * Facteur) + 4) + 'px Arial';
   Otxy(Math.round(Texte[Numero].X), Math.round(Texte[Numero].Y - Texte[Numero].Lataille * 6 - 4), Texte[Numero].Le_Texte);
   ctx.font.height = (Math.round(8 * Facteur)) + 'px Arial';
   Couleur('#000000');
@@ -1089,6 +1092,7 @@ function Redessprinc(Blanc) {  // Отображение компонентов 
   for (let Pour = 1; Pour <= Nb_Carrefour; Pour++) { Affiche_Carrefour(Pour, Blanc) }
   for (let Pour = 1; Pour <= Nb_Memoire; Pour++) { Affiche_Memoire(Pour, '#000000', Blanc) }
   for (let Pour = 1; Pour <= Nb_Sequenceur; Pour++) { Affiche_Sequenceur(Pour, Blanc) }
+  for (let Pour = 1; Pour <= Nb_Valve; Pour++) { Affiche_Valve(Pour, '#000000', Blanc) }
   for (let Pour = 1; Pour <= Nb_Texte; Pour++) { Affiche_Texte(Pour, '#000000') }
 
   //ctx.font = '10px Arial'
@@ -1097,24 +1101,25 @@ function Redessprinc(Blanc) {  // Отображение компонентов 
 function Redess(Blanc) {  //
   ClearDevice();
   Redessprinc(Blanc);
-  
+
 }
 
 //Очистка ненужных элементов
 function ClearObjet() {
-  Verin.splice(Nb_Verin + 1, Max_Verin );
-  Distributeur.splice(Nb_Distributeur + 1, Max_Distributeur );
-  Commande.splice(Nb_Commande + 1, Max_Commande );
-  Canal.splice(Nb_Canal + 1, Max_Canal );
-  Canal_Pilote.splice(Nb_Canal_Pilote + 1, Max_Canal_Pilote );
-  AliMentation.splice(Nb_Alimentation + 1, Max_Alimentation );
-  Capteur.splice(Nb_Capteur + 1, Max_Capteur );
-  Alim_Pilote.splice(Nb_Alim_Pilote + 1, Max_Alim_Pilote );
-  Carrefour.splice(Nb_Carrefour + 1, Max_Carrefour );
-  Carrefour_Pilote.splice(Nb_Carrefour_Pilote + 1, Max_Carrefour_Pilote );
-  Memoire.splice(Nb_Memoire + 1, Max_Memoire );
-  Sequenceur.splice(Nb_Sequenceur + 1, Max_Sequenceur );
-  Texte.splice(Nb_Texte + 1, Max_Texte );
+  Verin.splice(Nb_Verin + 1, Max_Verin);
+  Distributeur.splice(Nb_Distributeur + 1, Max_Distributeur);
+  Commande.splice(Nb_Commande + 1, Max_Commande);
+  Canal.splice(Nb_Canal + 1, Max_Canal);
+  Canal_Pilote.splice(Nb_Canal_Pilote + 1, Max_Canal_Pilote);
+  AliMentation.splice(Nb_Alimentation + 1, Max_Alimentation);
+  Capteur.splice(Nb_Capteur + 1, Max_Capteur);
+  Alim_Pilote.splice(Nb_Alim_Pilote + 1, Max_Alim_Pilote);
+  Carrefour.splice(Nb_Carrefour + 1, Max_Carrefour);
+  Carrefour_Pilote.splice(Nb_Carrefour_Pilote + 1, Max_Carrefour_Pilote);
+  Memoire.splice(Nb_Memoire + 1, Max_Memoire);
+  Sequenceur.splice(Nb_Sequenceur + 1, Max_Sequenceur);
+  Valve.splice(Nb_Valve + 1, Max_Valve);
+  Texte.splice(Nb_Texte + 1, Max_Texte);
 }
 
 //Создание формы
@@ -1125,34 +1130,34 @@ function FormCreate() {
   DoubleBuffered = true;
   Facteur = 1;
   Fichiermodifie = false;
-  
+
   Heure = false;
   Super_Raz();
 
   Redess(false);
-  
+
   Compteursouris = 0;
- 
+
   Immonde_rustine_double_v = false;
   Immonde_rustine_galet_v = false;
-  
+
 }
 
 //Вывод текста в верхнюю строку
 function PetitMenu(couleur, s) {
   document.getElementById('placeForText').innerHTML = s;
   document.getElementById('placeForText').style.color = couleur;
-  
+
 }
 
 //Выход по нажатию правой кнопки мыши
 function Cestfini() {  //
-  
+
   Redess(false);
   PetitMenu('#FFFFFF', 'Pfff');
   funcCursor('default'); //Курсор в виде стрелки
   Couleur('#000000');
-  
+
 }
 
 
@@ -1213,7 +1218,7 @@ function Ou_Que() {  //Old_X, Old_Y - координаты   Objet - вывод�
   Old_Y = Y;
   Lax2 = X;   //Для совместимости
   Lay2 = Y;
-  
+
 }
 
 //Создать текст
@@ -1276,6 +1281,113 @@ function Sleep(milliseconds) {
     currentDate = Date.now();
   } while (currentDate - date < milliseconds);
 }
+
+
+
+
+
+
+
+
+
+
+
+//Создать запорную арматуру
+function Cree_Valve(XC, YC, Modelec, L_Etat) {
+  //XC,YC - координаты, Modelec - модель,  L_Etat - состояние запорной арматуры 1 - открыта, 2 - закрыта
+  Nb_Valve++;
+  NewValve(Nb_Valve);
+
+  Valve[Nb_Valve].X = XC;
+  Valve[Nb_Valve].Y = YC;
+
+  switch (Modelec) {
+
+    case 'Shutoff_valve':
+      Valve[Nb_Valve].EntreeX[1] = XC - 30;
+      Valve[Nb_Valve].EntreeY[1] = YC;
+      Valve[Nb_Valve].EntreeX[2] = XC + 30;
+      Valve[Nb_Valve].EntreeY[2] = YC;
+      break;
+    case 'Check_valve':
+      Valve[Nb_Valve].EntreeX[1] = XC - 15;
+      Valve[Nb_Valve].EntreeY[1] = YC;
+      Valve[Nb_Valve].EntreeX[2] = XC + 15;
+      Valve[Nb_Valve].EntreeY[2] = YC;
+  }
+
+  Valve[Nb_Valve].Modele = Modelec;
+  Valve[Nb_Valve].Etat = L_Etat;
+
+}
+//Отобразить запорную арматуру
+function Affiche_Valve(Numero, C, Blanc) {
+  //Numero - номер, C - цвет, Blanc - отображать или нет
+  var Coul = '';
+  //var XDeca = 0;
+
+  if (!Blanc) { Couleur(C) } else { Couleur('#000000') } //Черный
+  Couleur(C);
+
+  //if (Valve[Numero].Etat == 1) { XDeca = 0 } else { if (Valve[Numero].Etat == 2) { XDeca = DLargeur } else { if (Valve[Numero].Etat == 3) { XDeca = -DLargeur } } }
+
+  switch (Valve[Numero].Modele) {
+    case 'Shutoff_valve':
+      if (Valve[Numero].Etat == 1) {
+        Triangle2(Valve[Numero].X - 20, Valve[Numero].Y + 10, Valve[Numero].X - 20, Valve[Numero].Y - 10, Valve[Numero].X, Valve[Numero].Y, false);
+        Triangle2(Valve[Numero].X + 20, Valve[Numero].Y + 10, Valve[Numero].X + 20, Valve[Numero].Y - 10, Valve[Numero].X, Valve[Numero].Y, false);
+        Ligne(Valve[Numero].X - 20, Valve[Numero].Y, Valve[Numero].X - 30, Valve[Numero].Y);
+        Ligne(Valve[Numero].X + 20, Valve[Numero].Y, Valve[Numero].X + 30, Valve[Numero].Y);
+      } else {
+        Triangle2(Valve[Numero].X - 20, Valve[Numero].Y + 10, Valve[Numero].X - 20, Valve[Numero].Y - 10, Valve[Numero].X, Valve[Numero].Y, true);
+        Triangle2(Valve[Numero].X + 20, Valve[Numero].Y + 10, Valve[Numero].X + 20, Valve[Numero].Y - 10, Valve[Numero].X, Valve[Numero].Y, true);
+        Ligne(Valve[Numero].X - 20, Valve[Numero].Y, Valve[Numero].X - 30, Valve[Numero].Y);
+        Ligne(Valve[Numero].X + 20, Valve[Numero].Y, Valve[Numero].X + 30, Valve[Numero].Y);
+      }
+      break;
+    case 'Check_valve':
+      if (Valve[Numero].Etat == 1) {
+        Ligne(Valve[Numero].X - 7, Valve[Numero].Y, Valve[Numero].X, Valve[Numero].Y - 8);
+        Ligne(Valve[Numero].X - 7, Valve[Numero].Y, Valve[Numero].X, Valve[Numero].Y + 8);
+        Cercle(Valve[Numero].X, Valve[Numero].Y, 5);
+        Ligne(Valve[Numero].X - 7, Valve[Numero].Y, Valve[Numero].X - 15, Valve[Numero].Y);
+        Ligne(Valve[Numero].X + 5, Valve[Numero].Y, Valve[Numero].X + 15, Valve[Numero].Y);
+      } else {
+        Ligne(Valve[Numero].X - 7, Valve[Numero].Y, Valve[Numero].X, Valve[Numero].Y - 8);
+        Ligne(Valve[Numero].X - 7, Valve[Numero].Y, Valve[Numero].X, Valve[Numero].Y + 8);
+        Cercle(Valve[Numero].X + 5, Valve[Numero].Y, 5);
+        Ligne(Valve[Numero].X - 7, Valve[Numero].Y, Valve[Numero].X - 15, Valve[Numero].Y);
+        Ligne(Valve[Numero].X + 10, Valve[Numero].Y, Valve[Numero].X + 15, Valve[Numero].Y);
+      }
+      break;
+  }
+  if (C == '#FFFFFF') { Coul = '#FFFFFF' } else { Coul = '#FF00FF' }
+  if (!Blanc) { Couleur(Coul) } else { Couleur('#000000') }
+
+
+
+  Couleur(C);
+
+
+  Couleur('#000000');
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 console.log("Окончание программы");

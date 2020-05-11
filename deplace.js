@@ -93,6 +93,17 @@ function Deplace_Objet() {
       Commande[Distributeur[Pour].Com[2].Laquelle].Y = Commande[Distributeur[Pour].Com[2].Laquelle].Y + dy;
       break;
 
+      case 'Un_Valve':
+      dx = Lax - Valve[Pour].X;
+      dy = Lay - Valve[Pour].Y;
+      Valve[Pour].X = Valve[Pour].X + dx;
+      Valve[Pour].Y = Valve[Pour].Y + dy;
+      for (let Pour2 = 1; Pour2 <= 2; Pour2++) {
+        Valve[Pour].EntreeX[Pour2] = Valve[Pour].EntreeX[Pour2] + dx;
+        Valve[Pour].EntreeY[Pour2] = Valve[Pour].EntreeY[Pour2] + dy;
+      }
+      break;
+
     case 'Un_Texte':
       dx = Lax - Math.round(Texte[Pour].X);
       dy = Lay - Math.round(Texte[Pour].Y);

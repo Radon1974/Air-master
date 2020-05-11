@@ -28,6 +28,7 @@ function Ajoute_Objet() {  //
         Vieux_Nb_Canal_Pilote = Nb_Canal_Pilote;
         Vieux_Nb_Memoire = Nb_Memoire;
         Vieux_Nb_Sequenceur = Nb_Sequenceur;
+        Vieux_Nb_Valve = Nb_Valve;
         Vieux_Nb_Texte = Nb_Texte;
         Nb_Texte = 0; //Лишняя
         if (Nb_Verin<Max_Verin-4) {
@@ -78,11 +79,18 @@ function Ajoute_Objet() {  //
           Sequenceur[Nb_Sequenceur].Etat =1;
           Affiche_Etat_Sequenceur(Nb_Sequenceur);
         }
+
+        if (Nb_Valve<Max_Valve-2) {
+          Cree_Valve(150,170,'Shutoff_valve',1);
+          Cree_Valve(150,225,'Check_valve',1);
+        }
     
         if (Nb_Alimentation < Max_Alimentation-1) {Cree_Alimentation(640,460)}
         if (Nb_Alim_Pilote < Max_Alim_Pilote-1) {Cree_Alim_Pilote(640,500)}
         if (Nb_Carrefour < Max_Carrefour-1) {Cree_Carrefour(680,460)}
         if (Nb_Carrefour_Pilote < Max_Carrefour_Pilote-1) {Cree_Carrefour_Pilote(680,500)}
+
+
         for (let Pour=Vieux_Nb_Verin+1; Pour <= Nb_Verin; Pour++) {Affiche_Verin(Pour,'#000000',true)}
         for (let Pour=Vieux_Nb_Distributeur+1; Pour <= Nb_Distributeur; Pour++) {Affiche_Distributeur(Pour,'#000000',true)}
         for (let Pour=Vieux_Nb_Capteur+1; Pour <= Nb_Capteur; Pour++) {Affiche_Capteur(Pour,'#000000',true)}
@@ -92,6 +100,7 @@ function Ajoute_Objet() {  //
         for (let Pour=Vieux_Nb_Carrefour+1; Pour <= Nb_Carrefour; Pour++) {Affiche_Carrefour(Pour,false)}
         for (let Pour=Vieux_Nb_Memoire+1; Pour <= Nb_Memoire; Pour++) {Affiche_Memoire(Pour,15,true)}
         for (let Pour=Vieux_Nb_Sequenceur+1; Pour <= Nb_Sequenceur; Pour++) { Affiche_Sequenceur(Pour,true)}
+        for (let Pour=Vieux_Nb_Valve+1; Pour <= Nb_Valve; Pour++) {Affiche_Valve(Pour,'#000000',true)}
     
         Couleur('#FF0000');
         Otxy(635,480,'Сила');
@@ -125,6 +134,7 @@ function Ajoute_Objet() {  //
         Nb_Commande = Vieux_Nb_Commande;
         Nb_Memoire = Vieux_Nb_Memoire;
         Nb_Sequenceur = Vieux_Nb_Sequenceur;
+        Nb_Valve = Vieux_Nb_Valve;
         Nb_Texte = Vieux_Nb_Texte;
         Raz_Vieux();
         Facteur = Vieux_Facteur;
@@ -280,7 +290,17 @@ function Ajoute_Objet() {  //
           while ((requete.length != 1) || !(['2', '3', '4', '5', '6', '7', '8'].includes(requete))) { requete = Ed('Ведите количество шагов (от 2 до 8)', '', true);}
           Cree_Sequenceur(Lax, Lay, parseInt(requete));
           break;
-    
+        case 'Un_Valve':
+          Celui_La = Celui_La - Nb_Valve;
+          switch (Celui_La) {
+            case 1:
+            Cree_Valve(Lax, Lay,'Shutoff_valve', 1);
+            break;
+            case 2:
+            Cree_Valve(Lax, Lay,'Check_valve', 1); 
+            break;
+          }
+          break;
       }
     }
 
@@ -342,6 +362,12 @@ function Pointe_Objet(Objet, Co) {  //
     if ((Objet == 'Action') || (Objet == 'Tout') || (Objet == 'Toutsaufcanal')) {
       for (let Pour = Vieux_Nb_Capteur + 1; Pour <= Nb_Capteur; Pour++) {
         if ((Objet == 'Tout') || (Objet == 'Toutsaufcanal') || (['A_Poussoir', 'A_Levier', 'A_Poussoir_Bistable', 'A_Levier_Bistable'].includes(Capteur[Pour].Modele))) { PaveP(Capteur[Pour].X, Capteur[Pour].Y) }
+      }
+    }
+
+    if ((Objet == 'Action') || (Objet == 'Tout') || (Objet == 'Toutsaufcanal')) {
+      for (let Pour = Vieux_Nb_Valve + 1; Pour <= Nb_Valve; Pour++) {
+        if ((Objet == 'Tout') || (Objet == 'Toutsaufcanal') || (['Shutoff_valve', 'Check_valve'].includes(Valve[Pour].Modele))) { PaveP(Valve[Pour].X, Valve[Pour].Y) }
       }
     }
   
@@ -528,6 +554,18 @@ function Pointe_Objet(Objet, Co) {  //
             }
           }
   
+          if ((Objet == 'Tout') || (Objet == 'Toutsaufcanal')) {
+            for (let Pour = Vieux_Nb_Valve + 1; Pour <= Nb_Valve; Pour++) {
+              if (Dist(Valve[Pour].X, Valve[Pour].Y)) {
+                Objet = 'Un_Valve';
+                Celui_La = Pour;
+                Objet2 = Objet;
+                Celui_La2 = Celui_La;
+                return false;
+              }
+            }
+          }
+
           if ((Objet == 'Tout') || (Objet == 'Toutsaufcanal')) {
             for (let Pour = 1; Pour <= Nb_Texte; Pour++) {
               if (Dist(Texte[Pour].X, Texte[Pour].Y)) {
