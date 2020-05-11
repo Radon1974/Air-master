@@ -257,6 +257,11 @@ function EntrepointView() {  // Вывод на экран каналов
             Entre_Pave(Verin[Pour].EntreeX[1], Verin[Pour].EntreeY[1]);
             if (['Double2', 'Double_T', 'Double_A', 'Double_T_A', 'Double_V'].includes(Verin[Pour].Modele)) { Entre_Pave(Verin[Pour].EntreeX[2], Verin[Pour].EntreeY[2]) }
         }
+        for (let Pour = 1; Pour <= Nb_Valve; Pour++) {
+
+            Entre_Pave(Valve[Pour].EntreeX[1], Valve[Pour].EntreeY[1]);
+            if (['Shutoff_valve', 'Check_valve'].includes(Valve[Pour].Modele)) { Entre_Pave(Valve[Pour].EntreeX[2], Valve[Pour].EntreeY[2]) }
+        }
     } else {
         for (let Pour = 1; Pour <= Nb_Alim_Pilote; Pour++) { Entre_Pave(Alim_Pilote[Pour].X, Alim_Pilote[Pour].Y) }
         for (let Pour = 1; Pour <= Nb_Carrefour_Pilote; Pour++) { Entre_Pave(Carrefour_Pilote[Pour].X, Carrefour_Pilote[Pour].Y) }
@@ -420,6 +425,23 @@ function DRA(X_s, Y_s) {  // Ввод точки канала
                             Branche2.Quoi = 'Un_V';    //Тип компонента (гидроцилиндр)
                             Branche2.Lequel = Pour;    //Номер  гидроцилиндра
                             Branche2.Branchement = Pour2;  //Номер точки присоединения к гидроцилиндру
+                        }
+                    }
+                }
+            }
+
+            if (Puissance) {
+                for (let Pour = 1; Pour <= Nb_Valve; Pour++) {
+                    for (let Pour2 = 1; Pour2 <= 2; Pour2++) {
+                        D = Dista(Valve[Pour].EntreeX[Pour2], Valve[Pour].EntreeY[Pour2]);
+
+                        if (D < Distance) {
+                            Distance = D;
+                            Xd = Valve[Pour].EntreeX[Pour2];    //Присвоить координаты  Valve
+                            Yd = Valve[Pour].EntreeY[Pour2];
+                            Branche2.Quoi = 'Un_Valve';    //Тип компонента (запорная арматура)
+                            Branche2.Lequel = Pour;    //Номер  запорной арматуры
+                            Branche2.Branchement = Pour2;  //Номер точки присоединения к запорной арматуре
                         }
                     }
                 }
