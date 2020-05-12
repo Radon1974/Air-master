@@ -141,6 +141,14 @@ function Ligne(X1, Y1, X2, Y2) {
   ctx.stroke();
 }
 
+//Рисование линии
+function Ligne2(X1, Y1, X2, Y2) {
+  ctx.beginPath();
+  ctx.moveTo(X1, Y1);
+  ctx.lineTo(X2, Y2);
+  ctx.stroke();
+}
+
 //Рисование эллипса
 function Ellipse_SVG(X1, Y1, X2, Y2) {
   ctx.save();

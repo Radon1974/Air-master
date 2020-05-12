@@ -554,7 +554,7 @@ function Pointe_Objet(Objet, Co) {  //
             }
           }
   
-          if ((Objet == 'Tout') || (Objet == 'Toutsaufcanal')) {
+          if ((Objet == 'Action') || (Objet == 'Tout') || (Objet == 'Toutsaufcanal')) {
             for (let Pour = Vieux_Nb_Valve + 1; Pour <= Nb_Valve; Pour++) {
               if (Dist(Valve[Pour].X, Valve[Pour].Y)) {
                 Objet = 'Un_Valve';

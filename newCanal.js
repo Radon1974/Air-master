@@ -147,7 +147,7 @@ function Cree_Canal() {  //Запись канала после введения
             }
         }
     }
-    if (Pouet) { Nb_Canal-- }  //Для отладки закоментировано (временно)
+    if (Pouet) { Nb_Canal-- }
     if (Nb_Canal == Max_Canal) { Encore = false }
 
 }
@@ -191,7 +191,7 @@ function Cree_Canal_Pilote() {  //Запись канала после введ�
             if ((Canal_Pilote[Nb_Canal_Pilote].Bout[Pour].Quoi == 'Un_Cap') && (Canal_Pilote[Nb_Canal_Pilote].Bout[3 - Pour].Quoi == 'Un_Cap') && (Canal_Pilote[Nb_Canal_Pilote].Bout[1].Lequel == Canal_Pilote[Nb_Canal_Pilote].Bout[2].Lequel)) (Pouet = true)
         }
     }
-    if (Pouet) { Nb_Canal_Pilote-- }  //Для отладки закоментировано (временно)
+    if (Pouet) { Nb_Canal_Pilote-- }
     if (Nb_Canal_Pilote == Max_Canal_Pilote) { Encore = false }
 }
 

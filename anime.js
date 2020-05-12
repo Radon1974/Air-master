@@ -41,7 +41,7 @@ function RAZ1Click2() {  //Функция изменить положение
             Sequenceur[Pour].Etat = (Sequenceur[Pour].Etat + 1) % (Sequenceur[Pour].Combien + 1);
             break;
         case 'Un_Valve':
-            if (Valve[Pour].Modele == 'Shutoff_valve') {Valve[Pour].Etat = Max((Valve[Pour].Etat + 1) % 3, 1)};
+            if (Valve[Pour].Modele == 'Shutoff_valve') { Valve[Pour].Etat = Max((Valve[Pour].Etat + 1) % 3, 1) };
             break;
     }
     Redess(false);
@@ -131,7 +131,7 @@ function Anime2() {  // Выполнение анимации компонент
     L_Action = Objet2;
     Celui_La = Celui_La2;
 
-    if (['Un_D', 'Un_Cap'].includes(L_Action)) {
+    if (['Un_D', 'Un_Cap', 'Un_Valve'].includes(L_Action)) {
 
         //L_Action = 'Action';
 
@@ -150,6 +150,9 @@ function Anime2() {  // Выполнение анимации компонент
                 break;
             case 'Un_Cap':
                 Change_Etat_Capteur(Celui_La);
+                break;
+            case 'Un_Valve':
+                if (Valve[Celui_La].Modele == 'Shutoff_valve') { Change_Etat_Valve(Celui_La) };
                 break;
         }
 
@@ -340,7 +343,7 @@ function Anime2() {  // Выполнение анимации компонент
     for (let Pour = 1; Pour <= Nb_Canal; Pour++) { for (Pour2 = 1; Pour2 <= 2; Pour2++) { if (Canal[Pour].Bout[Pour2].Quoi == 'Une_Alim') { Canal[Pour].Etat = Un } } }
 
     for (let Fois = 1; Fois <= 4; Fois++) {
-
+        //Присвоение входу компонента состояние работа от силового канала
         for (let Pour = 1; Pour <= Nb_Canal; Pour++) {
             if ([Bouche, Un].includes(Canal[Pour].Etat)) {
                 for (Pour2 = 1; Pour2 <= 2; Pour2++) {
@@ -366,7 +369,31 @@ function Anime2() {  // Выполнение анимации компонент
                         Verin[Canal[Pour].Bout[Pour2].Lequel].Etat_Ext[Canal[Pour].Bout[Pour2].Branchement] = Canal[Pour].Etat;
                     }
                 }
+                for (let Pour2 = 1; Pour2 <= 2; Pour2++) {
+                    if (Canal[Pour].Bout[Pour2].Quoi == 'Un_Valve') {
+                        Valve[Canal[Pour].Bout[Pour2].Lequel].Etat_Ext[Canal[Pour].Bout[Pour2].Branchement] = Canal[Pour].Etat;
+                        if (Valve[Canal[Pour].Bout[Pour2].Lequel].Modele == 'Check_valve') {
+                            if (Valve[Canal[Pour].Bout[Pour2].Lequel].Etat_Ext[1] == 0) {
+                                Valve[Canal[Pour].Bout[Pour2].Lequel].Etat = 1;
+                            } else { Valve[Canal[Pour].Bout[Pour2].Lequel].Etat = 2 };
+                        }
+                    }
+                }
             }
+        }
+        //Присвоение выходу компонента состояние работа от силового канала
+        for (let Pour = 1; Pour <= Nb_Valve; Pour++) {
+            if (Valve[Pour].Etat == 1 && (Valve[Pour].Etat_Ext[1] == 1 || Valve[Pour].Etat_Ext[2] == 1) || Valve[Pour].Modele == 'Check_valve') {
+                if (Valve[Pour].Modele == 'Check_valve' && Valve[Pour].Etat_Ext[2] == 1) {
+                    Valve[Pour].Etat_Ext[1] = 0;
+                } 
+                if (Valve[Pour].Modele == 'Check_valve' && Valve[Pour].Etat_Ext[1] == 1) {
+                    Valve[Pour].Etat_Ext[1] = 1, Valve[Pour].Etat_Ext[2] = 1;
+                }
+                if (Valve[Pour].Modele == 'Shutoff_valve') {
+                    Valve[Pour].Etat_Ext[1] = 1, Valve[Pour].Etat_Ext[2] = 1;
+                }
+            };
         }
 
         for (let Pour = 1; Pour <= Nb_Distributeur; Pour++) {
@@ -400,7 +427,7 @@ function Anime2() {  // Выполнение анимации компонент
                 }
             }
         }
-
+        //Присвоение силовому каналу состояния работа на выходе из компонента
         for (let Pour = 1; Pour <= Nb_Canal; Pour++) {
             if (Canal[Pour].Etat == 0) {
 
@@ -420,6 +447,13 @@ function Anime2() {  // Выполнение анимации компонент
                     }
                 }
 
+                for (let Pour2 = 1; Pour2 <= 2; Pour2++) {
+                    if (Canal[Pour].Bout[Pour2].Quoi == 'Un_Valve') {
+                        if ([Bouche, Un].includes(Valve[Canal[Pour].Bout[Pour2].Lequel].Etat_Ext[Canal[Pour].Bout[Pour2].Branchement])) {
+                            Canal[Pour].Etat = Valve[Canal[Pour].Bout[Pour2].Lequel].Etat_Ext[Canal[Pour].Bout[Pour2].Branchement]
+                        }
+                    }
+                }
             }
         }
     }
@@ -493,23 +527,28 @@ function Anime2() {  // Выполнение анимации компонент
 
 
 
-
+//Изменить состояние запорной арматуры
+function Change_Etat_Valve(Numero) {
+    Affiche_Valve(Numero, '#FFFFFF', false);
+    Valve[Numero].Etat = 3 - Valve[Numero].Etat;
+    Affiche_Valve(Numero, '#000000', false);
+}
 
 
 //Изменить состояние датчика
-function Change_Etat_Capteur(Numero) {  //
+function Change_Etat_Capteur(Numero) {
     Affiche_Capteur(Numero, '#FFFFFF', false);
     Capteur[Numero].Etat = 3 - Capteur[Numero].Etat;
     Affiche_Capteur(Numero, '#000000', false);
 }
 
 //Поместите датчик
-function Place_Capteur_a(Numero, Combien) {  //
+function Place_Capteur_a(Numero, Combien) {
     if (Capteur[Numero].Etat != Combien) { Change_Etat_Capteur(Numero) }
 }
 
 //Поместите дозатор
-function Place_Distributeur_a(Numero, Combien) {  //
+function Place_Distributeur_a(Numero, Combien) {
     Affiche_Distributeur(Numero, '#FFFFFF', false);
     Distributeur[Numero].Etat = Combien;
     Commande[Distributeur[Numero].Com[1].Laquelle].Etat = Distributeur[Numero].Etat;

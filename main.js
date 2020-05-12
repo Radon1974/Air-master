@@ -359,7 +359,7 @@ var Un = 1;
 var Zero = 0;
 var Bof = 2;
 var Bouche = 3;
-var MobDist = 20;
+var MobDist = 5;
 
 //Массивы
 var Distributeur = [];
