@@ -284,6 +284,7 @@ function Save1Click() {
     'Nb_Memoire': Nb_Memoire,
     'Nb_Sequenceur': Nb_Sequenceur,
     'Nb_Valve': Nb_Valve,
+    'Nb_Manometr': Nb_Manometr,
     'Nb_Texte': Nb_Texte,
 
     'Verin': Verin,
@@ -299,6 +300,7 @@ function Save1Click() {
     'Memoire': Memoire,
     'Sequenceur': Sequenceur,
     'Valve': Valve,
+    'Manometr': Manometr,
     'Texte': Texte
   };
 
@@ -320,6 +322,7 @@ function Load1Click(LoadF) {
     Nb_Memoire = LoadF['Nb_Memoire'],
     Nb_Sequenceur = LoadF['Nb_Sequenceur'],
     Nb_Valve = LoadF['Nb_Valve'],
+    Nb_Manometr = LoadF['Nb_Manometr'],
     Nb_Texte = LoadF['Nb_Texte'],
 
     Verin = LoadF['Verin'],
@@ -335,6 +338,7 @@ function Load1Click(LoadF) {
     Memoire = LoadF['Memoire'],
     Sequenceur = LoadF['Sequenceur'],
     Valve = LoadF['Valve'],
+    Manometr = LoadF['Manometr'],
     Texte = LoadF['Texte']
 
 }

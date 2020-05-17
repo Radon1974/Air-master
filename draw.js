@@ -12,6 +12,7 @@ function Raz() {
   for (let i = 1; i <= Nb_Carrefour; i++) { Carrefour[i].Etat = Zero }
   for (let i = 1; i <= Nb_Carrefour_Pilote; i++) { Carrefour_Pilote[i].Etat = Bof }
   for (let i = 1; i <= Nb_Valve; i++) { for (let k = 1; k <= 2; k++) { Valve[i].Etat_Ext[k] = 0 } }   //Проверить
+  for (let i = 1; i <= Nb_Manometr; i++) { Manometr[i].Etat = Zero }
 }
 
 //Старый обнуление
@@ -29,6 +30,7 @@ function Raz_Vieux() {
   Vieux_Nb_Memoire = 0;
   Vieux_Nb_Sequenceur = 0;
   Vieux_Nb_Valve = 0;
+  Vieux_Nb_Manometr = 0;
 }
 
 //Большое обнуление
@@ -68,6 +70,7 @@ function Super_Raz() {
   Nb_Memoire = 0;
   Nb_Sequenceur = 0;
   Nb_Valve = 0;
+  Nb_Manometr = 0;
   Nb_Texte = 0;
 
 }
@@ -1093,6 +1096,7 @@ function Redessprinc(Blanc) {  // Отображение компонентов 
   for (let Pour = 1; Pour <= Nb_Memoire; Pour++) { Affiche_Memoire(Pour, '#000000', Blanc) }
   for (let Pour = 1; Pour <= Nb_Sequenceur; Pour++) { Affiche_Sequenceur(Pour, Blanc) }
   for (let Pour = 1; Pour <= Nb_Valve; Pour++) { Affiche_Valve(Pour, '#000000', Blanc) }
+  for (let Pour = 1; Pour <= Nb_Manometr; Pour++) { Affiche_Manometr(Pour, '#000000', Blanc) }
   for (let Pour = 1; Pour <= Nb_Texte; Pour++) { Affiche_Texte(Pour, '#000000') }
 
   //ctx.font = '10px Arial'
@@ -1119,6 +1123,7 @@ function ClearObjet() {
   Memoire.splice(Nb_Memoire + 1, Max_Memoire);
   Sequenceur.splice(Nb_Sequenceur + 1, Max_Sequenceur);
   Valve.splice(Nb_Valve + 1, Max_Valve);
+  Manometr.splice(Nb_Manometr + 1, Max_Manometr);
   Texte.splice(Nb_Texte + 1, Max_Texte);
 }
 
@@ -1373,9 +1378,36 @@ function Affiche_Valve(Numero, C, Blanc) {
 
 }
 
+//Создать манометр
+function Cree_Manometr(Xe, Ye) {  //
+  Nb_Manometr++;
+  NewManometr(Nb_Manometr);
+  Manometr[Nb_Manometr].X = Xe;
+  Manometr[Nb_Manometr].Y = Ye;
+  Manometr[Nb_Manometr].View = 2;
+}
 
+//Отобразить манометр
+function Affiche_Manometr(Numero, C, Blanc) {  //
 
+  if (!Blanc) { Couleur(C) } else { Couleur('#000000') }
+  
+  if (Manometr[Numero].View == 2) {
+    Ligne(Manometr[Numero].X, Manometr[Numero].Y, Manometr[Numero].X, Manometr[Numero].Y-20);
+    Cercle(Manometr[Numero].X, Manometr[Numero].Y-40, 20)
+    Ligne(Manometr[Numero].X+15, Manometr[Numero].Y-25, Manometr[Numero].X-15, Manometr[Numero].Y-55);
+    Ligne(Manometr[Numero].X-15, Manometr[Numero].Y-55, Manometr[Numero].X-5, Manometr[Numero].Y-50);
+    Ligne(Manometr[Numero].X-15, Manometr[Numero].Y-55, Manometr[Numero].X-10, Manometr[Numero].Y-45);
+    } else {
+    Ligne(Manometr[Numero].X, Manometr[Numero].Y, Manometr[Numero].X, Manometr[Numero].Y-20);
+    Cercle(Manometr[Numero].X, Manometr[Numero].Y-40, 20)
+    ctx.textAlign = 'center';
+    ctx.font = (Math.round(10 * Facteur) + 4) + 'px Arial';
+    Otxy(Manometr[Numero].X, Manometr[Numero].Y-35, Manometr[Numero].Pressure)
+  }
 
+  Couleur('#000000');
+}
 
 
 

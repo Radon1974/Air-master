@@ -336,6 +336,7 @@ var Max_Carrefour_Pilote = 50;
 var Max_Memoire = 20;
 var Max_Sequenceur = 5;
 var Max_Valve = 30;
+var Max_Manometr = 30;
 var Max_Texte = 80;
 var Coef = 1.2;
 var VHauteur = 35 * Coef;//Высота элемента
@@ -376,6 +377,7 @@ var Carrefour = [];
 var Carrefour_Pilote = [];
 var Memoire = [];
 var Valve = [];
+var Manometr = [];
 var Texte = [];
 var T_Parcours = [];
 var Les_points = [];
@@ -387,10 +389,11 @@ var Str16 = ''; //Можно убрать
 //Переменные
 var Nb_Verin = 0, Nb_Distributeur = 0, Nb_Commande = 0, Nb_Canal = 0, Nb_Alimentation = 0, Nb_Capteur = 0;
 var Nb_Alim_Pilote = 0, Nb_Canal_Pilote = 0, Nb_Carrefour = 0, Nb_Carrefour_Pilote = 0, Nb_Memoire = 0;
-var Nb_Sequenceur = 0, Nb_Valve = 0, Nb_Texte = 0, G_Pour = 0, G_K = 0, X_s = 0, Y_s = 0, Nb_Point = 0;
+var Nb_Sequenceur = 0, Nb_Valve = 0, Nb_Manometr = 0, Nb_Texte = 0, G_Pour = 0, G_K = 0, X_s = 0, Y_s = 0, Nb_Point = 0;
 var Vieux_Nb_Verin = 0, Vieux_Nb_Distributeur = 0, Vieux_Nb_Capteur = 0, Vieux_Nb_Alim = 0;
 var Vieux_Nb_Alim_Pilote = 0, Vieux_Nb_Carrefour = 0, Vieux_Nb_Carrefour_Pilote = 0, Vieux_Nb_Commande = 0;
-var Vieux_Nb_Canal = 0, Vieux_Nb_Canal_Pilote = 0, Vieux_Nb_Memoire = 0, Vieux_Nb_Sequenceur = 0, Vieux_Nb_Valve = 0, Vieux_Nb_Texte = 0;
+var Vieux_Nb_Canal = 0, Vieux_Nb_Canal_Pilote = 0, Vieux_Nb_Memoire = 0, Vieux_Nb_Sequenceur = 0, Vieux_Nb_Valve = 0; 
+var Vieux_Nb_Manometr = 0, Vieux_Nb_Texte = 0;
 var Heur = 0, Minute = 0, Seconde = 0, Sec100 = 0;
 
 var Gauche = true, Droite = true, SVG = true, Immonde_rustine_double_v = true, Immonde_rustine_galet_v = true;
@@ -478,6 +481,7 @@ function NewCanal(i) {
     ParcoursX: [],
     ParcoursY: [],
     Etat: 0,
+    Pressure: 0.00, //Давление в линии
     Bout: [{
       Quoi: '',
       Lequel: 0,
@@ -525,7 +529,8 @@ function NewAliMentation(i) {
   
   AliMentation[i] = {
     X: 0,
-    Y: 0
+    Y: 0,
+    Pressure: 0.00 //Давление в линии
   }
   
 }
@@ -594,12 +599,24 @@ function NewValve(i) {
       X: 0,           //Координата X запорной арматуры
       Y: 0,           //Координата Y запорной арматуры
       Etat_Ext: [],   //Количество точек подключения
-      Etat: [],       //Состояние запорной арматуры 1 - открыта, 2 - закрыта
+      Etat: 0,       //Состояние запорной арматуры 1 - открыта, 2 - закрыта
       EntreeX: [],    //Координата X точки подключения
       EntreeY: [],    //Координата Y точки подключения
       Modele: ''      //Тип запорной арматуры
   }
   
+}
+
+function NewManometr(i) {
+  
+  Manometr[i] = {
+    X: 0,           //Координата X запорной арматуры
+    Y: 0,           //Координата Y запорной арматуры
+    Etat: 0,       //Состояние манометра 1 - есть давление, 0 - нет давления
+    Pressure: 0.00, //Давление в линии
+    View: 0         //Отображение цифр на манометре 1 - отображаются, 2 - не отображаются
+  }
+
 }
 
 function NewTexte(i) {
@@ -661,3 +678,15 @@ var Branche2 = {
 //Cercle(X+5, Y, 5);
 //Ligne(X-7, Y, X-15, Y);
 //Ligne(X+10, Y, X+15, Y);
+
+//X=350;
+//Y=100;
+//Манометр
+//Ligne(X, Y, X, Y-20);
+//Cercle(X, Y-40, 20)
+//Ligne(X+15, Y-25, X-15, Y-55);
+//Ligne(X-15, Y-55, X-5, Y-50);
+//Ligne(X-15, Y-55, X-10, Y-45);
+//ctx.textAlign = 'center';
+//ctx.font = (Math.round(10 * Facteur) + 4) + 'px Arial';
+//Otxy(X, Y-35, "0.00")

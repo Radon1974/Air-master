@@ -12,7 +12,7 @@ function Deplace_Objet() {
   var mypoint = '';
 
 
-  
+
   Pour = Celui_La2;
   Objet = Objet2;
 
@@ -22,20 +22,20 @@ function Deplace_Objet() {
     return false;
   }
 
- 
+
   Lax = X_s / Facteur;
   Lay = Y_s / Facteur;
 
   if (Objet == 'Un_Cap') { if (['Et', 'Ou', 'Inhibition'].includes(Capteur[Pour].Modele)) { Objet = 'Une_Cellule' } }
 
-  
+
 
   Immonde_rustine_double_v = false;
   Immonde_rustine_galet_v = false;
 
   if (Objet == 'Un_V') { if (Verin[Pour].Modele == 'Double_V') { Immonde_rustine_double_v = true } }
   if (Objet == 'Un_Cap') { if (Capteur[Pour].Modele == 'A_Galet_V') { Immonde_rustine_galet_v = true } }
- 
+
   Immonde_rustine_double_v = false;
   Immonde_rustine_galet_v = false;
   if (Objet == 'Ouste') { return false }
@@ -93,7 +93,7 @@ function Deplace_Objet() {
       Commande[Distributeur[Pour].Com[2].Laquelle].Y = Commande[Distributeur[Pour].Com[2].Laquelle].Y + dy;
       break;
 
-      case 'Un_Valve':
+    case 'Un_Valve':
       dx = Lax - Valve[Pour].X;
       dy = Lay - Valve[Pour].Y;
       Valve[Pour].X = Valve[Pour].X + dx;
@@ -102,6 +102,13 @@ function Deplace_Objet() {
         Valve[Pour].EntreeX[Pour2] = Valve[Pour].EntreeX[Pour2] + dx;
         Valve[Pour].EntreeY[Pour2] = Valve[Pour].EntreeY[Pour2] + dy;
       }
+      break;
+
+    case 'Un_Manometr':
+      dx = Lax - Math.round(Manometr[Pour].X);
+      dy = Lay - Math.round(Manometr[Pour].Y);
+      Manometr[Pour].X = Manometr[Pour].X + dx;
+      Manometr[Pour].Y = Manometr[Pour].Y + dy;
       break;
 
     case 'Un_Texte':
