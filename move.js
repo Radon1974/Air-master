@@ -14,7 +14,13 @@ function Decah(Combien) {
     for (let Pour = 1; Pour <= Nb_Alim_Pilote; Pour++) { Alim_Pilote[Pour].X = Alim_Pilote[Pour].X + Combien }
     for (let Pour = 1; Pour <= Nb_Carrefour; Pour++) { Carrefour[Pour].X = Carrefour[Pour].X + Combien }
     for (let Pour = 1; Pour <= Nb_Carrefour_Pilote; Pour++) { Carrefour_Pilote[Pour].X = Carrefour_Pilote[Pour].X + Combien }
+    for (let Pour = 1; Pour <= Nb_Manometr; Pour++) { Manometr[Pour].X = Manometr[Pour].X + Combien }
   
+    for (let Pour = 1; Pour <= Nb_Valve; Pour++) {
+      Valve[Pour].X = Valve[Pour].X + Combien;
+      for (let Pour2 = 1; Pour2 <= 2; Pour2++) { Valve[Pour].EntreeX[Pour2] = Valve[Pour].EntreeX[Pour2] + Combien }
+    }
+    
     for (let Pour = 1; Pour <= Nb_Verin; Pour++) {
       Verin[Pour].X = Verin[Pour].X + Combien;
       for (let Pour2 = 1; Pour2 <= 2; Pour2++) { Verin[Pour].EntreeX[Pour2] = Verin[Pour].EntreeX[Pour2] + Combien }
@@ -55,7 +61,13 @@ function Decah(Combien) {
     for (let Pour = 1; Pour <= Nb_Alim_Pilote; Pour++) { Alim_Pilote[Pour].Y = Alim_Pilote[Pour].Y + Combien }
     for (let Pour = 1; Pour <= Nb_Carrefour; Pour++) { Carrefour[Pour].Y = Carrefour[Pour].Y + Combien }
     for (let Pour = 1; Pour <= Nb_Carrefour_Pilote; Pour++) { Carrefour_Pilote[Pour].Y = Carrefour_Pilote[Pour].Y + Combien }
+    for (let Pour = 1; Pour <= Nb_Manometr; Pour++) { Manometr[Pour].Y = Manometr[Pour].Y + Combien }
   
+    for (let Pour = 1; Pour <= Nb_Valve; Pour++) {
+      Valve[Pour].Y = Valve[Pour].Y + Combien;
+      for (let Pour2 = 1; Pour2 <= 2; Pour2++) { Valve[Pour].EntreeY[Pour2] = Valve[Pour].EntreeY[Pour2] + Combien }
+    }
+    
     for (let Pour = 1; Pour <= Nb_Verin; Pour++) {
       Verin[Pour].Y = Verin[Pour].Y + Combien;
       for (let Pour2 = 1; Pour2 <= 2; Pour2++) { Verin[Pour].EntreeY[Pour2] = Verin[Pour].EntreeY[Pour2] + Combien }
@@ -93,6 +105,8 @@ function Minimumh() {
     for (let Pour = 1; Pour <= Nb_Distributeur; Pour++) { if (Distributeur[Pour].X < mini) { mini = Distributeur[Pour].X } }
     for (let Pour = 1; Pour <= Nb_Memoire; Pour++) { if (Memoire[Pour].X < mini) { mini = Memoire[Pour].X } }
     for (let Pour = 1; Pour <= Nb_Sequenceur; Pour++) { if (Sequenceur[Pour].X < mini) { mini = Sequenceur[Pour].X } }
+    for (let Pour = 1; Pour <= Nb_Valve; Pour++) { if (Valve[Pour].X < mini) { mini = Valve[Pour].X } }
+    for (let Pour = 1; Pour <= Nb_Manometr; Pour++) { if (Manometr[Pour].X < mini) { mini = Manometr[Pour].X } }
     for (let Pour = 1; Pour <= Nb_Texte; Pour++) { if (Texte[Pour].X < mini) { mini = Texte[Pour].X } }
     
     return mini;
@@ -112,6 +126,8 @@ function Minimumv() {
     for (let Pour = 1; Pour <= Nb_Distributeur; Pour++) { if (Distributeur[Pour].Y < mini) { mini = Distributeur[Pour].Y } }
     for (let Pour = 1; Pour <= Nb_Memoire; Pour++) { if (Memoire[Pour].Y < mini) { mini = Memoire[Pour].Y } }
     for (let Pour = 1; Pour <= Nb_Sequenceur; Pour++) { if (Sequenceur[Pour].Y < mini) { mini = Sequenceur[Pour].Y } }
+    for (let Pour = 1; Pour <= Nb_Valve; Pour++) { if (Valve[Pour].Y < mini) { mini = Valve[Pour].Y } }
+    for (let Pour = 1; Pour <= Nb_Manometr; Pour++) { if (Manometr[Pour].Y < mini) { mini = Manometr[Pour].Y } }
     for (let Pour = 1; Pour <= Nb_Texte; Pour++) { if (Texte[Pour].Y < mini) { mini = Texte[Pour].Y } }
 
     return mini;

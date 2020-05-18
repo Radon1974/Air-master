@@ -262,6 +262,7 @@ function EntrepointView() {  // Вывод на экран каналов
             Entre_Pave(Valve[Pour].EntreeX[1], Valve[Pour].EntreeY[1]);
             if (['Shutoff_valve', 'Check_valve'].includes(Valve[Pour].Modele)) { Entre_Pave(Valve[Pour].EntreeX[2], Valve[Pour].EntreeY[2]) }
         }
+        for (let Pour = 1; Pour <= Nb_Manometr; Pour++) { Entre_Pave(Manometr[Pour].X, Manometr[Pour].Y) }
     } else {
         for (let Pour = 1; Pour <= Nb_Alim_Pilote; Pour++) { Entre_Pave(Alim_Pilote[Pour].X, Alim_Pilote[Pour].Y) }
         for (let Pour = 1; Pour <= Nb_Carrefour_Pilote; Pour++) { Entre_Pave(Carrefour_Pilote[Pour].X, Carrefour_Pilote[Pour].Y) }
@@ -340,6 +341,21 @@ function DRA(X_s, Y_s) {  // Ввод точки канала
                         Xd = Carrefour[Pour].X;     //Присвоить координаты  линии управления
                         Yd = Carrefour[Pour].Y;
                         Branche2.Quoi = 'Un_Carrefour';
+                        Branche2.Lequel = Pour;
+                        Branche2.Branchement = 0;
+                    }
+                }
+            }
+
+            if (Puissance) {
+                for (let Pour = 1; Pour <= Nb_Manometr; Pour++) {
+                    D = Dista(Manometr[Pour].X, Manometr[Pour].Y);
+
+                    if (D < Distance) {
+                        Distance = D;
+                        Xd = Manometr[Pour].X;     //Присвоить координаты  линии управления
+                        Yd = Manometr[Pour].Y;
+                        Branche2.Quoi = 'Un_Manometr';
                         Branche2.Lequel = Pour;
                         Branche2.Branchement = 0;
                     }
