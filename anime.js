@@ -160,9 +160,11 @@ function Anime2() {  // Выполнение анимации компонент
     }
     Raz();
 
-        //*********************** Линия управления ************************
+    
     for (let Pour = 1; Pour <= Nb_Canal_Pilote; Pour++) { for (Pour2 = 1; Pour2 <= 2; Pour2++) { if (Canal_Pilote[Pour].Bout[Pour2].Quoi == 'Une_Alim_Pilote') { Canal_Pilote[Pour].Etat = Un } } }
     for (let Pour = 1; Pour <= Nb_Canal; Pour++) { Canal[Pour].Etat = Zero }
+
+    //*********************** Линия управления ************************
     for (let Fois = 1; Fois <= 16; Fois++) {
         //Присвоение пересечениям значения работающего канала
         for (let Pour = 1; Pour <= Nb_Canal_Pilote; Pour++) {
@@ -342,10 +344,23 @@ function Anime2() {  // Выполнение анимации компонент
         }
     }
 
-    
+
     //*********************** Силовая линия ************************
-    for (let Pour = 1; Pour <= Nb_Canal; Pour++) { for (Pour2 = 1; Pour2 <= 2; Pour2++) { if (Canal[Pour].Bout[Pour2].Quoi == 'Une_Alim') { Canal[Pour].Etat = Un } } }
-    
+    for (let Pour = 1; Pour <= Nb_Canal; Pour++) {
+        for (Pour2 = 1; Pour2 <= 2; Pour2++) {
+            if (Canal[Pour].Bout[Pour2].Quoi == 'Une_Alim') {
+                Canal[Pour].Etat = Un;
+                for (Pour3 = 1; Pour3 <= Nb_Alimentation; Pour3++) {
+                    for (Pour4 = 1; Pour4 <= Canal[Pour].NbPoint; Pour4++) {
+                        if (Canal[Pour].ParcoursX[Pour4] == AliMentation[Pour3].X && Canal[Pour].ParcoursY[Pour4] == AliMentation[Pour3].Y) { 
+                            Canal[Pour].Pressure = AliMentation[Pour3].Pressure
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     for (let Fois = 1; Fois <= 4; Fois++) {
         //Присвоение входу компонента состояние работа от силового канала
         for (let Pour = 1; Pour <= Nb_Canal; Pour++) {
@@ -353,6 +368,7 @@ function Anime2() {  // Выполнение анимации компонент
                 for (Pour2 = 1; Pour2 <= 2; Pour2++) {
                     if (Canal[Pour].Bout[Pour2].Quoi == 'Un_Carrefour') {
                         Carrefour[Canal[Pour].Bout[Pour2].Lequel].Etat = Canal[Pour].Etat;
+
                     }
                 }
             }
@@ -363,6 +379,8 @@ function Anime2() {  // Выполнение анимации компонент
                 for (Pour2 = 1; Pour2 <= 2; Pour2++) {
                     if (Canal[Pour].Bout[Pour2].Quoi == 'Un_Manometr') {
                         Manometr[Canal[Pour].Bout[Pour2].Lequel].Etat = Canal[Pour].Etat;
+                        if (Manometr[Canal[Pour].Bout[Pour2].Lequel].Pressure == 0) { Manometr[Canal[Pour].Bout[Pour2].Lequel].Pressure = Canal[Pour].Pressure }
+                        Manometr[Canal[Pour].Bout[Pour2].Lequel].View = 1;
                     }
                 }
             }
@@ -400,7 +418,7 @@ function Anime2() {  // Выполнение анимации компонент
             if (Valve[Pour].Etat == 1 && (Valve[Pour].Etat_Ext[1] == 1 || Valve[Pour].Etat_Ext[2] == 1) || Valve[Pour].Modele == 'Check_valve') {
                 if (Valve[Pour].Modele == 'Check_valve' && Valve[Pour].Etat_Ext[2] == 1) {
                     Valve[Pour].Etat_Ext[1] = 0;
-                } 
+                }
                 if (Valve[Pour].Modele == 'Check_valve' && Valve[Pour].Etat_Ext[1] == 1) {
                     Valve[Pour].Etat_Ext[1] = 1, Valve[Pour].Etat_Ext[2] = 1;
                 }

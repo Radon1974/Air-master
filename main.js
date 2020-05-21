@@ -82,9 +82,9 @@ Button9.addEventListener('click', function (e) {    //Добавить цепь 
 Button10.addEventListener('click', function (e) {   //Пошаговое выполнение
   Anime1Click();
 });
-//Button11.addEventListener('click', function (e) {   //Непрерывное выполнение
-//  Continu1Click();
-//});
+Button11.addEventListener('click', function (e) {   //Непрерывное выполнение
+  Continu1Click();
+});
 Button12.addEventListener('click', function (e) {   //Изменить состояние компонента
   RAZ1Click();
 });
@@ -481,7 +481,7 @@ function NewCanal(i) {
     ParcoursX: [],
     ParcoursY: [],
     Etat: 0,
-    Pressure: 0.00, //Давление в линии
+    Pressure: 0, //Давление в линии
     Bout: [{
       Quoi: '',
       Lequel: 0,
@@ -530,7 +530,7 @@ function NewAliMentation(i) {
   AliMentation[i] = {
     X: 0,
     Y: 0,
-    Pressure: 0.00 //Давление в линии
+    Pressure: 0 //Давление в линии
   }
   
 }

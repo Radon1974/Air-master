@@ -2,7 +2,7 @@
 
 function Raz() {
   //var i = 1,k = 1;
-  for (let i = 1; i <= Nb_Canal; i++) { Canal[i].Etat = Zero }
+  for (let i = 1; i <= Nb_Canal; i++) { Canal[i].Etat = Zero, Canal[i].Pressure = Zero }
   for (let i = 1; i <= Nb_Distributeur; i++) { for (let k = -1; k <= 5; k++) { Distributeur[i].Etat_Ext[k] = 0 } }
   for (let i = 1; i <= Nb_Memoire; i++) { for (let k = 1; k <= 4; k++) { Memoire[i].Etat_Ext[k] = 0 } }
   for (let i = 1; i <= Nb_Sequenceur; i++) { for (let k = 1; k <= 22; k++) { Sequenceur[i].Etat_Ext[k] = 0 } }
@@ -12,7 +12,7 @@ function Raz() {
   for (let i = 1; i <= Nb_Carrefour; i++) { Carrefour[i].Etat = Zero }
   for (let i = 1; i <= Nb_Carrefour_Pilote; i++) { Carrefour_Pilote[i].Etat = Bof }
   for (let i = 1; i <= Nb_Valve; i++) { for (let k = 1; k <= 2; k++) { Valve[i].Etat_Ext[k] = 0 } }   //Проверить
-  for (let i = 1; i <= Nb_Manometr; i++) { Manometr[i].Etat = Zero }
+  for (let i = 1; i <= Nb_Manometr; i++) { Manometr[i].Etat = Zero, Manometr[i].Pressure = Zero }
 }
 
 //Старый обнуление
@@ -1177,11 +1177,12 @@ function Cestfini() {  //
 
 
 //Создать питание
-function Cree_Alimentation(Xe, Ye) {  //
+function Cree_Alimentation(Xe, Ye, Pressure_Alimentation) {  //
   Nb_Alimentation++;
   NewAliMentation(Nb_Alimentation);
   AliMentation[Nb_Alimentation].X = Xe;
   AliMentation[Nb_Alimentation].Y = Ye;
+  AliMentation[Nb_Alimentation].Pressure = Pressure_Alimentation;
 }
 
 //Создать питание пилота
@@ -1403,7 +1404,7 @@ function Affiche_Manometr(Numero, C, Blanc) {  //
     Cercle(Manometr[Numero].X, Manometr[Numero].Y-40, 20)
     ctx.textAlign = 'center';
     ctx.font = (Math.round(10 * Facteur) + 4) + 'px Arial';
-    Otxy(Manometr[Numero].X, Manometr[Numero].Y-35, Manometr[Numero].Pressure)
+    Otxy(Manometr[Numero].X, Manometr[Numero].Y-35, Manometr[Numero].Pressure.toFixed(2))
   }
 
   Couleur('#000000');
