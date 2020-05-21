@@ -159,6 +159,8 @@ function Anime2() {  // Выполнение анимации компонент
         return;
     }
     Raz();
+
+        //*********************** Линия управления ************************
     for (let Pour = 1; Pour <= Nb_Canal_Pilote; Pour++) { for (Pour2 = 1; Pour2 <= 2; Pour2++) { if (Canal_Pilote[Pour].Bout[Pour2].Quoi == 'Une_Alim_Pilote') { Canal_Pilote[Pour].Etat = Un } } }
     for (let Pour = 1; Pour <= Nb_Canal; Pour++) { Canal[Pour].Etat = Zero }
     for (let Fois = 1; Fois <= 16; Fois++) {
@@ -340,8 +342,10 @@ function Anime2() {  // Выполнение анимации компонент
         }
     }
 
+    
+    //*********************** Силовая линия ************************
     for (let Pour = 1; Pour <= Nb_Canal; Pour++) { for (Pour2 = 1; Pour2 <= 2; Pour2++) { if (Canal[Pour].Bout[Pour2].Quoi == 'Une_Alim') { Canal[Pour].Etat = Un } } }
-
+    
     for (let Fois = 1; Fois <= 4; Fois++) {
         //Присвоение входу компонента состояние работа от силового канала
         for (let Pour = 1; Pour <= Nb_Canal; Pour++) {
@@ -349,6 +353,16 @@ function Anime2() {  // Выполнение анимации компонент
                 for (Pour2 = 1; Pour2 <= 2; Pour2++) {
                     if (Canal[Pour].Bout[Pour2].Quoi == 'Un_Carrefour') {
                         Carrefour[Canal[Pour].Bout[Pour2].Lequel].Etat = Canal[Pour].Etat;
+                    }
+                }
+            }
+        }
+
+        for (let Pour = 1; Pour <= Nb_Canal; Pour++) {
+            if ([Bouche, Un].includes(Canal[Pour].Etat)) {
+                for (Pour2 = 1; Pour2 <= 2; Pour2++) {
+                    if (Canal[Pour].Bout[Pour2].Quoi == 'Un_Manometr') {
+                        Manometr[Canal[Pour].Bout[Pour2].Lequel].Etat = Canal[Pour].Etat;
                     }
                 }
             }
@@ -443,6 +457,14 @@ function Anime2() {  // Выполнение анимации компонент
                     if (Canal[Pour].Bout[Pour2].Quoi == 'Un_Carrefour') {
                         if ([Bouche, Un].includes(Carrefour[Canal[Pour].Bout[Pour2].Lequel].Etat)) {
                             Canal[Pour].Etat = Carrefour[Canal[Pour].Bout[Pour2].Lequel].Etat;
+                        }
+                    }
+                }
+
+                for (let Pour2 = 1; Pour2 <= 2; Pour2++) {
+                    if (Canal[Pour].Bout[Pour2].Quoi == 'Un_Manometr') {
+                        if ([Bouche, Un].includes(Manometr[Canal[Pour].Bout[Pour2].Lequel].Etat)) {
+                            Canal[Pour].Etat = Manometr[Canal[Pour].Bout[Pour2].Lequel].Etat;
                         }
                     }
                 }
