@@ -111,6 +111,13 @@ function Deplace_Objet() {
       Manometr[Pour].Y = Manometr[Pour].Y + dy;
       break;
 
+    case 'Un_Exhaust':
+      dx = Lax - Math.round(Exhaust[Pour].X);
+      dy = Lay - Math.round(Exhaust[Pour].Y);
+      Exhaust[Pour].X = Exhaust[Pour].X + dx;
+      Exhaust[Pour].Y = Exhaust[Pour].Y + dy;
+      break;      
+
     case 'Un_Texte':
       dx = Lax - Math.round(Texte[Pour].X);
       dy = Lay - Math.round(Texte[Pour].Y);

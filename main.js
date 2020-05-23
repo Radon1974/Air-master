@@ -337,6 +337,7 @@ var Max_Memoire = 20;
 var Max_Sequenceur = 5;
 var Max_Valve = 30;
 var Max_Manometr = 30;
+var Max_Exhaust = 30;
 var Max_Texte = 80;
 var Coef = 1.2;
 var VHauteur = 35 * Coef;//Высота элемента
@@ -360,7 +361,7 @@ var Un = 1;
 var Zero = 0;
 var Bof = 2;
 var Bouche = 3;
-var MobDist = 5;
+var MobDist = 20;
 
 //Массивы
 var Distributeur = [];
@@ -378,6 +379,7 @@ var Carrefour_Pilote = [];
 var Memoire = [];
 var Valve = [];
 var Manometr = [];
+var Exhaust = [];
 var Texte = [];
 var T_Parcours = [];
 var Les_points = [];
@@ -389,11 +391,12 @@ var Str16 = ''; //Можно убрать
 //Переменные
 var Nb_Verin = 0, Nb_Distributeur = 0, Nb_Commande = 0, Nb_Canal = 0, Nb_Alimentation = 0, Nb_Capteur = 0;
 var Nb_Alim_Pilote = 0, Nb_Canal_Pilote = 0, Nb_Carrefour = 0, Nb_Carrefour_Pilote = 0, Nb_Memoire = 0;
-var Nb_Sequenceur = 0, Nb_Valve = 0, Nb_Manometr = 0, Nb_Texte = 0, G_Pour = 0, G_K = 0, X_s = 0, Y_s = 0, Nb_Point = 0;
+var Nb_Sequenceur = 0, Nb_Valve = 0, Nb_Manometr = 0, Nb_Exhaust = 0, Nb_Texte = 0; 
+var G_Pour = 0, G_K = 0, X_s = 0, Y_s = 0, Nb_Point = 0;
 var Vieux_Nb_Verin = 0, Vieux_Nb_Distributeur = 0, Vieux_Nb_Capteur = 0, Vieux_Nb_Alim = 0;
 var Vieux_Nb_Alim_Pilote = 0, Vieux_Nb_Carrefour = 0, Vieux_Nb_Carrefour_Pilote = 0, Vieux_Nb_Commande = 0;
 var Vieux_Nb_Canal = 0, Vieux_Nb_Canal_Pilote = 0, Vieux_Nb_Memoire = 0, Vieux_Nb_Sequenceur = 0, Vieux_Nb_Valve = 0; 
-var Vieux_Nb_Manometr = 0, Vieux_Nb_Texte = 0;
+var Vieux_Nb_Manometr = 0, Vieux_Nb_Exhaust = 0, Vieux_Nb_Texte = 0;
 var Heur = 0, Minute = 0, Seconde = 0, Sec100 = 0;
 
 var Gauche = true, Droite = true, SVG = true, Immonde_rustine_double_v = true, Immonde_rustine_galet_v = true;
@@ -610,11 +613,21 @@ function NewValve(i) {
 function NewManometr(i) {
   
   Manometr[i] = {
-    X: 0,           //Координата X запорной арматуры
-    Y: 0,           //Координата Y запорной арматуры
-    Etat: 0,       //Состояние манометра 1 - есть давление, 0 - нет давления
-    Pressure: 0.00, //Давление в линии
+    X: 0,           //Координата X манометра
+    Y: 0,           //Координата Y манометра
+    Etat: 0,        //Состояние манометра 1 - есть давление, 0 - нет давления
+    Pressure: 0,    //Давление в линии
     View: 0         //Отображение цифр на манометре 1 - отображаются, 2 - не отображаются
+  }
+
+}
+
+function NewExhaust(i) {
+  
+  Exhaust[i] = {
+    X: 0,           //Координата X выхлопа
+    Y: 0,           //Координата Y выхлопа
+    Etat: 0,        //Состояние выхлопа 1 - соединен с источником давления , 0 - не соединен с источником давления
   }
 
 }
@@ -690,3 +703,9 @@ var Branche2 = {
 //ctx.textAlign = 'center';
 //ctx.font = (Math.round(10 * Facteur) + 4) + 'px Arial';
 //Otxy(X, Y-35, "0.00")
+
+//X=350;
+//Y=200;
+//Выхлоп
+//Ligne(X, Y, X, Y-20);
+//Triangle2(X+10, Y-20, X-10, Y-20, X, Y-35, false)

@@ -30,6 +30,7 @@ function Ajoute_Objet() {  //
   Vieux_Nb_Sequenceur = Nb_Sequenceur;
   Vieux_Nb_Valve = Nb_Valve;
   Vieux_Nb_Manometr = Nb_Manometr;
+  Vieux_Nb_Exhaust = Nb_Exhaust;
   Vieux_Nb_Texte = Nb_Texte;
   Nb_Texte = 0; //Лишняя
   if (Nb_Verin < Max_Verin - 4) {
@@ -87,7 +88,7 @@ function Ajoute_Objet() {  //
   }
 
   if (Nb_Manometr < Max_Manometr - 1) { Cree_Manometr(150, 300) }
-
+  if (Nb_Exhaust < Max_Exhaust - 1) { Cree_Exhaust(640, 420) }
   if (Nb_Alimentation < Max_Alimentation - 1) { Cree_Alimentation(640, 460) }
   if (Nb_Alim_Pilote < Max_Alim_Pilote - 1) { Cree_Alim_Pilote(640, 500) }
   if (Nb_Carrefour < Max_Carrefour - 1) { Cree_Carrefour(680, 460) }
@@ -105,12 +106,14 @@ function Ajoute_Objet() {  //
   for (let Pour = Vieux_Nb_Sequenceur + 1; Pour <= Nb_Sequenceur; Pour++) { Affiche_Sequenceur(Pour, true) }
   for (let Pour = Vieux_Nb_Valve + 1; Pour <= Nb_Valve; Pour++) { Affiche_Valve(Pour, '#000000', true) }
   for (let Pour = Vieux_Nb_Manometr + 1; Pour <= Nb_Manometr; Pour++) { Affiche_Manometr(Pour, '#000000', true) }
+  for (let Pour = Vieux_Nb_Exhaust + 1; Pour <= Nb_Exhaust; Pour++) { Affiche_Exhaust(Pour, '#000000') }
 
   Couleur('#FF0000');
-  Otxy(635, 480, 'Сила');
+  Otxy(600, 480, 'Источник силового давления');
   Couleur('#FF00FF');
-  Otxy(635, 520, 'Команда');
+  Otxy(600, 520, 'Источник управляющего давления');
   Couleur('#000000');
+  Otxy(620, 440, 'Выхлоп');
   Otxy(200, 490, 'Пересечения должны быть созданы до подачи каналов');
   Otxy(150, 420, 'Поместите колесо датчиков положения в конец стержней цилиндров');
   Otxy(360, 130, 'Память должна быть включена');
@@ -140,6 +143,7 @@ function Ajoute_Objet2(Objet, Celui_La) {  //
   Nb_Sequenceur = Vieux_Nb_Sequenceur;
   Nb_Valve = Vieux_Nb_Valve;
   Nb_Manometr = Vieux_Nb_Manometr;
+  Nb_Exhaust = Vieux_Nb_Exhaust;
   Nb_Texte = Vieux_Nb_Texte;
   Raz_Vieux();
   Facteur = Vieux_Facteur;
@@ -312,6 +316,9 @@ function Ajoute_Objet3(Objet, Lax, Lay, Quoi_Donc, Celui_La) {  //
     case 'Un_Manometr':
       Cree_Manometr(Lax, Lay);
       break;
+    case 'Un_Exhaust':
+      Cree_Exhaust(Lax, Lay);
+      break;
   }
 }
 
@@ -359,6 +366,7 @@ function Pointe_Objet(Objet, Co) {  //
     for (let Pour = Vieux_Nb_Carrefour + 1; Pour <= Nb_Carrefour; Pour++) { PaveP(Carrefour[Pour].X, Carrefour[Pour].Y) }
     for (let Pour = Vieux_Nb_Carrefour_Pilote + 1; Pour <= Nb_Carrefour_Pilote; Pour++) { PaveP(Carrefour_Pilote[Pour].X, Carrefour_Pilote[Pour].Y) }
     for (let Pour = Vieux_Nb_Manometr + 1; Pour <= Nb_Manometr; Pour++) { PaveP(Manometr[Pour].X, Manometr[Pour].Y) }
+    for (let Pour = Vieux_Nb_Exhaust + 1; Pour <= Nb_Exhaust; Pour++) { PaveP(Exhaust[Pour].X, Exhaust[Pour].Y) }
     for (let Pour = 1; Pour <= Nb_Texte; Pour++) { PaveP(Texte[Pour].X, Texte[Pour].Y) }
   }
   if (Objet == 'Tout') {
@@ -590,6 +598,18 @@ function Pointe_Objet2(Objet, Prox) {  //
         }
       }
 
+      if ((Objet == 'Tout') || (Objet == 'Toutsaufcanal')) {
+        for (let Pour = 1; Pour <= Nb_Exhaust; Pour++) {
+          if (Dist(Exhaust[Pour].X, Exhaust[Pour].Y)) {
+            Objet = 'Un_Exhaust';
+            Celui_La = Pour;
+            Objet2 = Objet;
+            Celui_La2 = Celui_La;
+            return false;
+          }
+        }
+      }
+      
       if ((Objet == 'Tout') || (Objet == 'Toutsaufcanal')) {
         for (let Pour = 1; Pour <= Nb_Texte; Pour++) {
           if (Dist(Texte[Pour].X, Texte[Pour].Y)) {

@@ -387,6 +387,16 @@ function Anime2() {  // Выполнение анимации компонент
         }
 
         for (let Pour = 1; Pour <= Nb_Canal; Pour++) {
+            if ([Bouche, Un].includes(Canal[Pour].Etat)) {
+                for (Pour2 = 1; Pour2 <= 2; Pour2++) {
+                    if (Canal[Pour].Bout[Pour2].Quoi == 'Un_Exhaust') {
+                        Exhaust[Canal[Pour].Bout[Pour2].Lequel].Etat = Canal[Pour].Etat;
+                    }
+                }
+            }
+        }
+
+        for (let Pour = 1; Pour <= Nb_Canal; Pour++) {
             if ([Un, Bouche].includes(Canal[Pour].Etat)) {
 
                 for (let Pour2 = 1; Pour2 <= 2; Pour2++) {
@@ -498,6 +508,161 @@ function Anime2() {  // Выполнение анимации компонент
         }
     }
 
+    //*********************** Силовая линия (путь от выхлопа) ************************
+    for (let Pour = 1; Pour <= Nb_Canal; Pour++) {
+        for (Pour2 = 1; Pour2 <= 2; Pour2++) {
+            if (Canal[Pour].Bout[Pour2].Quoi == 'Un_Exhaust') {
+                for (Pour3 = 1; Pour3 <= Nb_Exhaust; Pour3++) {
+                    for (Pour4 = 1; Pour4 <= Canal[Pour].NbPoint; Pour4++) {
+                        if (Canal[Pour].ParcoursX[Pour4] == Exhaust[Pour3].X && Canal[Pour].ParcoursY[Pour4] == Exhaust[Pour3].Y && Exhaust[Pour3].Etat == Zero) {
+                            Canal[Pour].Etat = Zero;
+                            Canal[Pour].Pressure = Zero;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    for (let Fois = 1; Fois <= 4; Fois++) {
+        //Присвоение входу компонента состояние стравлено от силового канала
+        for (let Pour = 1; Pour <= Nb_Canal; Pour++) {
+            if ([Zero].includes(Canal[Pour].Etat)) {
+                for (Pour2 = 1; Pour2 <= 2; Pour2++) {
+                    if (Canal[Pour].Bout[Pour2].Quoi == 'Un_Carrefour') {
+                        Carrefour[Canal[Pour].Bout[Pour2].Lequel].Etat = Canal[Pour].Etat;
+
+                    }
+                }
+            }
+        }
+
+        for (let Pour = 1; Pour <= Nb_Canal; Pour++) {
+            if ([Zero].includes(Canal[Pour].Etat)) {
+                for (Pour2 = 1; Pour2 <= 2; Pour2++) {
+                    if (Canal[Pour].Bout[Pour2].Quoi == 'Un_Manometr') {
+                        Manometr[Canal[Pour].Bout[Pour2].Lequel].Etat = Canal[Pour].Etat;
+                        if (Manometr[Canal[Pour].Bout[Pour2].Lequel].Pressure == 0) { Manometr[Canal[Pour].Bout[Pour2].Lequel].Pressure = Canal[Pour].Pressure }
+                        Manometr[Canal[Pour].Bout[Pour2].Lequel].View = 1;
+                    }
+                }
+            }
+        }
+
+        for (let Pour = 1; Pour <= Nb_Canal; Pour++) {
+            if ([Zero].includes(Canal[Pour].Etat)) {
+
+                for (let Pour2 = 1; Pour2 <= 2; Pour2++) {
+                    if (Canal[Pour].Bout[Pour2].Quoi == 'Un_D') {
+                        if (Canal[Pour].Bout[Pour2].Branchement == 1) {
+                            Distributeur[Canal[Pour].Bout[Pour2].Lequel].Etat_Ext[Canal[Pour].Bout[Pour2].Branchement] = Canal[Pour].Etat
+                        }
+                    }
+                }
+                for (let Pour2 = 1; Pour2 <= 2; Pour2++) {
+                    if (Canal[Pour].Bout[Pour2].Quoi == 'Un_V') {
+                        Verin[Canal[Pour].Bout[Pour2].Lequel].Etat_Ext[Canal[Pour].Bout[Pour2].Branchement] = Canal[Pour].Etat;
+                    }
+                }
+                for (let Pour2 = 1; Pour2 <= 2; Pour2++) {
+                    if (Canal[Pour].Bout[Pour2].Quoi == 'Un_Valve') {
+                        Valve[Canal[Pour].Bout[Pour2].Lequel].Etat_Ext[Canal[Pour].Bout[Pour2].Branchement] = Canal[Pour].Etat;
+                        if (Valve[Canal[Pour].Bout[Pour2].Lequel].Modele == 'Check_valve') {
+                            if (Valve[Canal[Pour].Bout[Pour2].Lequel].Etat_Ext[1] == 0) {
+                                Valve[Canal[Pour].Bout[Pour2].Lequel].Etat = 1;
+                            } else { Valve[Canal[Pour].Bout[Pour2].Lequel].Etat = 2 };
+                        }
+                    }
+                }
+            }
+        }
+        //Присвоение выходу компонента состояние работа от силового канала
+        for (let Pour = 1; Pour <= Nb_Valve; Pour++) {
+            if (Valve[Pour].Etat == 1 && (Valve[Pour].Etat_Ext[1] == 1 || Valve[Pour].Etat_Ext[2] == 1) || Valve[Pour].Modele == 'Check_valve') {
+                if (Valve[Pour].Modele == 'Check_valve' && Valve[Pour].Etat_Ext[2] == 1) {
+                    Valve[Pour].Etat_Ext[1] = 0;                                //Проверить
+                }
+                if (Valve[Pour].Modele == 'Check_valve' && Valve[Pour].Etat_Ext[1] == 1) {
+                    Valve[Pour].Etat_Ext[1] = 1, Valve[Pour].Etat_Ext[2] = 1;   //Проверить
+                }
+                if (Valve[Pour].Modele == 'Shutoff_valve') {
+                    Valve[Pour].Etat_Ext[1] = 1, Valve[Pour].Etat_Ext[2] = 1;   //Проверить
+                }
+            };
+        }
+
+        for (let Pour = 1; Pour <= Nb_Distributeur; Pour++) {
+            if (!(['_4_3', '_5_3'].includes(Distributeur[Pour].Modele))) {
+                switch (Distributeur[Pour].Etat) {
+                    case 1:
+                        Distributeur[Pour].Etat_Ext[3] = Distributeur[Pour].Etat_Ext[1];
+                        if (Distributeur[Pour].Modele == '_2_2_') { Distributeur[Pour].Etat_Ext[4] = Distributeur[Pour].Etat_Ext[1] }
+                        if (Distributeur[Pour].Modele == '_2_2') { Distributeur[Pour].Etat_Ext[4] = Bouche }
+                        break;
+                    case 2:
+                        if (!(Distributeur[Pour].Modele == '_2_2_')) {
+                            Distributeur[Pour].Etat_Ext[4] = Distributeur[Pour].Etat_Ext[1]
+                        } else { Distributeur[Pour].Etat_Ext[4] = Bouche }
+                        break;
+                }
+            } else {
+
+                switch (Distributeur[Pour].Etat) {
+
+                    case 1:
+                        Distributeur[Pour].Etat_Ext[3] = Bouche;
+                        Distributeur[Pour].Etat_Ext[4] = Bouche;
+                        break;
+                    case 2:
+                        Distributeur[Pour].Etat_Ext[4] = Distributeur[Pour].Etat_Ext[1];
+                        break;
+                    case 3:
+                        Distributeur[Pour].Etat_Ext[3] = Distributeur[Pour].Etat_Ext[1];
+                        break;
+                }
+            }
+        }
+        //Присвоение силовому каналу состояния работа на выходе из компонента
+        for (let Pour = 1; Pour <= Nb_Canal; Pour++) {
+            if (Canal[Pour].Etat == 0) {
+
+                for (let Pour2 = 1; Pour2 <= 2; Pour2++) {
+                    if (Canal[Pour].Bout[Pour2].Quoi == 'Un_D') {
+                        if ([Zero].includes(Distributeur[Canal[Pour].Bout[Pour2].Lequel].Etat_Ext[Canal[Pour].Bout[Pour2].Branchement])) {
+                            Canal[Pour].Etat = Distributeur[Canal[Pour].Bout[Pour2].Lequel].Etat_Ext[Canal[Pour].Bout[Pour2].Branchement]
+                        }
+                    }
+                }
+
+                for (let Pour2 = 1; Pour2 <= 2; Pour2++) {
+                    if (Canal[Pour].Bout[Pour2].Quoi == 'Un_Carrefour') {
+                        if ([Zero].includes(Carrefour[Canal[Pour].Bout[Pour2].Lequel].Etat)) {
+                            Canal[Pour].Etat = Carrefour[Canal[Pour].Bout[Pour2].Lequel].Etat;
+                        }
+                    }
+                }
+
+                for (let Pour2 = 1; Pour2 <= 2; Pour2++) {
+                    if (Canal[Pour].Bout[Pour2].Quoi == 'Un_Manometr') {
+                        if ([Zero].includes(Manometr[Canal[Pour].Bout[Pour2].Lequel].Etat)) {
+                            Canal[Pour].Etat = Manometr[Canal[Pour].Bout[Pour2].Lequel].Etat;
+                        }
+                    }
+                }
+
+                for (let Pour2 = 1; Pour2 <= 2; Pour2++) {
+                    if (Canal[Pour].Bout[Pour2].Quoi == 'Un_Valve') {
+                        if ([Zero].includes(Valve[Canal[Pour].Bout[Pour2].Lequel].Etat_Ext[Canal[Pour].Bout[Pour2].Branchement])) {
+                            Canal[Pour].Etat = Valve[Canal[Pour].Bout[Pour2].Lequel].Etat_Ext[Canal[Pour].Bout[Pour2].Branchement]
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+    //*********************** Отображение анимации цилиндров ************************
     for (let Pour = 1; Pour <= Nb_Canal; Pour++) { Affiche_Canal(Pour, false) }
     for (let Pour = 1; Pour <= Nb_Canal_Pilote; Pour++) { Affiche_Canal_Pilote(Pour, false) }
     for (let Pour = 1; Pour <= Nb_Verin; Pour++) {

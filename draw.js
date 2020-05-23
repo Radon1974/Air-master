@@ -1,7 +1,6 @@
 
 
 function Raz() {
-  //var i = 1,k = 1;
   for (let i = 1; i <= Nb_Canal; i++) { Canal[i].Etat = Zero, Canal[i].Pressure = Zero }
   for (let i = 1; i <= Nb_Distributeur; i++) { for (let k = -1; k <= 5; k++) { Distributeur[i].Etat_Ext[k] = 0 } }
   for (let i = 1; i <= Nb_Memoire; i++) { for (let k = 1; k <= 4; k++) { Memoire[i].Etat_Ext[k] = 0 } }
@@ -31,6 +30,7 @@ function Raz_Vieux() {
   Vieux_Nb_Sequenceur = 0;
   Vieux_Nb_Valve = 0;
   Vieux_Nb_Manometr = 0;
+  Vieux_Nb_Exhaust = 0;
 }
 
 //Большое обнуление
@@ -71,6 +71,7 @@ function Super_Raz() {
   Nb_Sequenceur = 0;
   Nb_Valve = 0;
   Nb_Manometr = 0;
+  Nb_Exhaust = 0;
   Nb_Texte = 0;
 
 }
@@ -1097,6 +1098,7 @@ function Redessprinc(Blanc) {  // Отображение компонентов 
   for (let Pour = 1; Pour <= Nb_Sequenceur; Pour++) { Affiche_Sequenceur(Pour, Blanc) }
   for (let Pour = 1; Pour <= Nb_Valve; Pour++) { Affiche_Valve(Pour, '#000000', Blanc) }
   for (let Pour = 1; Pour <= Nb_Manometr; Pour++) { Affiche_Manometr(Pour, '#000000', Blanc) }
+  for (let Pour = 1; Pour <= Nb_Exhaust; Pour++) { Affiche_Exhaust(Pour, '#000000') }
   for (let Pour = 1; Pour <= Nb_Texte; Pour++) { Affiche_Texte(Pour, '#000000') }
 
   //ctx.font = '10px Arial'
@@ -1106,25 +1108,6 @@ function Redess(Blanc) {  //
   ClearDevice();
   Redessprinc(Blanc);
 
-}
-
-//Очистка ненужных элементов
-function ClearObjet() {
-  Verin.splice(Nb_Verin + 1, Max_Verin);
-  Distributeur.splice(Nb_Distributeur + 1, Max_Distributeur);
-  Commande.splice(Nb_Commande + 1, Max_Commande);
-  Canal.splice(Nb_Canal + 1, Max_Canal);
-  Canal_Pilote.splice(Nb_Canal_Pilote + 1, Max_Canal_Pilote);
-  AliMentation.splice(Nb_Alimentation + 1, Max_Alimentation);
-  Capteur.splice(Nb_Capteur + 1, Max_Capteur);
-  Alim_Pilote.splice(Nb_Alim_Pilote + 1, Max_Alim_Pilote);
-  Carrefour.splice(Nb_Carrefour + 1, Max_Carrefour);
-  Carrefour_Pilote.splice(Nb_Carrefour_Pilote + 1, Max_Carrefour_Pilote);
-  Memoire.splice(Nb_Memoire + 1, Max_Memoire);
-  Sequenceur.splice(Nb_Sequenceur + 1, Max_Sequenceur);
-  Valve.splice(Nb_Valve + 1, Max_Valve);
-  Manometr.splice(Nb_Manometr + 1, Max_Manometr);
-  Texte.splice(Nb_Texte + 1, Max_Texte);
 }
 
 //Создание формы
@@ -1380,7 +1363,7 @@ function Affiche_Valve(Numero, C, Blanc) {
 }
 
 //Создать манометр
-function Cree_Manometr(Xe, Ye) {  //
+function Cree_Manometr(Xe, Ye) {
   Nb_Manometr++;
   NewManometr(Nb_Manometr);
   Manometr[Nb_Manometr].X = Xe;
@@ -1389,28 +1372,42 @@ function Cree_Manometr(Xe, Ye) {  //
 }
 
 //Отобразить манометр
-function Affiche_Manometr(Numero, C, Blanc) {  //
+function Affiche_Manometr(Numero, C, Blanc) {
 
   if (!Blanc) { Couleur(C) } else { Couleur('#000000') }
-  
+
   if (Manometr[Numero].View == 2) {
-    Ligne(Manometr[Numero].X, Manometr[Numero].Y, Manometr[Numero].X, Manometr[Numero].Y-20);
-    Cercle(Manometr[Numero].X, Manometr[Numero].Y-40, 20)
-    Ligne(Manometr[Numero].X+15, Manometr[Numero].Y-25, Manometr[Numero].X-15, Manometr[Numero].Y-55);
-    Ligne(Manometr[Numero].X-15, Manometr[Numero].Y-55, Manometr[Numero].X-5, Manometr[Numero].Y-50);
-    Ligne(Manometr[Numero].X-15, Manometr[Numero].Y-55, Manometr[Numero].X-10, Manometr[Numero].Y-45);
-    } else {
-    Ligne(Manometr[Numero].X, Manometr[Numero].Y, Manometr[Numero].X, Manometr[Numero].Y-20);
-    Cercle(Manometr[Numero].X, Manometr[Numero].Y-40, 20)
+    Ligne(Manometr[Numero].X, Manometr[Numero].Y, Manometr[Numero].X, Manometr[Numero].Y - 20);
+    Cercle(Manometr[Numero].X, Manometr[Numero].Y - 40, 20)
+    Ligne(Manometr[Numero].X + 15, Manometr[Numero].Y - 25, Manometr[Numero].X - 15, Manometr[Numero].Y - 55);
+    Ligne(Manometr[Numero].X - 15, Manometr[Numero].Y - 55, Manometr[Numero].X - 5, Manometr[Numero].Y - 50);
+    Ligne(Manometr[Numero].X - 15, Manometr[Numero].Y - 55, Manometr[Numero].X - 10, Manometr[Numero].Y - 45);
+  } else {
+    Ligne(Manometr[Numero].X, Manometr[Numero].Y, Manometr[Numero].X, Manometr[Numero].Y - 20);
+    Cercle(Manometr[Numero].X, Manometr[Numero].Y - 40, 20)
     ctx.textAlign = 'center';
     ctx.font = (Math.round(10 * Facteur) + 4) + 'px Arial';
-    Otxy(Manometr[Numero].X, Manometr[Numero].Y-35, Manometr[Numero].Pressure.toFixed(2))
+    Otxy(Manometr[Numero].X, Manometr[Numero].Y - 35, Manometr[Numero].Pressure.toFixed(2))
   }
 
   Couleur('#000000');
 }
 
+//Создать выхлоп
+function Cree_Exhaust(Xe, Ye) {
+  Nb_Exhaust++;
+  NewExhaust(Nb_Exhaust);
+  Exhaust[Nb_Exhaust].X = Xe;
+  Exhaust[Nb_Exhaust].Y = Ye;
+}
 
+//Отобразить выхлоп
+function Affiche_Exhaust(Numero, C) {
+  Couleur(C)
+  Ligne(Exhaust[Numero].X, Exhaust[Numero].Y, Exhaust[Numero].X, Exhaust[Numero].Y - 20);
+  Triangle2(Exhaust[Numero].X + 10, Exhaust[Numero].Y - 20, Exhaust[Numero].X - 10, Exhaust[Numero].Y - 20, Exhaust[Numero].X, Exhaust[Numero].Y - 35, false)
+  Couleur('#000000');
+}
 
 
 

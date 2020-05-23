@@ -17,6 +17,26 @@ function Efface_Canal_Pilote(Celui_La2) {  //
   Nb_Canal_Pilote--;
 }
 
+//Очистка ненужных элементов
+function ClearObjet() {
+  Verin.splice(Nb_Verin + 1, Max_Verin);
+  Distributeur.splice(Nb_Distributeur + 1, Max_Distributeur);
+  Commande.splice(Nb_Commande + 1, Max_Commande);
+  Canal.splice(Nb_Canal + 1, Max_Canal);
+  Canal_Pilote.splice(Nb_Canal_Pilote + 1, Max_Canal_Pilote);
+  AliMentation.splice(Nb_Alimentation + 1, Max_Alimentation);
+  Capteur.splice(Nb_Capteur + 1, Max_Capteur);
+  Alim_Pilote.splice(Nb_Alim_Pilote + 1, Max_Alim_Pilote);
+  Carrefour.splice(Nb_Carrefour + 1, Max_Carrefour);
+  Carrefour_Pilote.splice(Nb_Carrefour_Pilote + 1, Max_Carrefour_Pilote);
+  Memoire.splice(Nb_Memoire + 1, Max_Memoire);
+  Sequenceur.splice(Nb_Sequenceur + 1, Max_Sequenceur);
+  Valve.splice(Nb_Valve + 1, Max_Valve);
+  Manometr.splice(Nb_Manometr + 1, Max_Manometr);
+  Exhaust.splice(Nb_Exhaust + 1, Max_Exhaust);
+  Texte.splice(Nb_Texte + 1, Max_Texte);
+}
+
 //Стереть
 function Effacer() {  //
   var Pour = 0;
@@ -28,7 +48,7 @@ function Effacer() {  //
   //Очистка вместе с компонентом силовых каналов
   Pointe_Quoi = Objet2;
   if (Pointe_Quoi == 'Rien') { return false }
-  if (['Une_Alim', 'Un_Carrefour', 'Un_D', 'Un_V', 'Un_Valve', 'Un_Manometr'].includes(Pointe_Quoi)) {
+  if (['Une_Alim', 'Un_Carrefour', 'Un_D', 'Un_V', 'Un_Valve', 'Un_Manometr', 'Un_Exhaust'].includes(Pointe_Quoi)) {
     Pour = 1;
     while (Pour <= Nb_Canal) {
       On_Efface = false;
@@ -110,6 +130,11 @@ function Effacer() {  //
                             if (Pointe_Quoi == 'Un_Manometr') {
                               for (let Pour = Celui_La2; Pour <= Nb_Manometr - 1; Pour++) { Manometr[Pour] = Manometr[Pour + 1] }
                               Nb_Manometr--;
+                            } else {
+                              if (Pointe_Quoi == 'Un_Exhaust') {
+                                for (let Pour = Celui_La2; Pour <= Nb_Exhaust - 1; Pour++) { Exhaust[Pour] = Exhaust[Pour + 1] }
+                                Nb_Exhaust--;
+                              }
                             }
                           }
                         }
@@ -123,8 +148,7 @@ function Effacer() {  //
         }
       }
     }
+    Redess(false);
+    ClearObjet();
   }
-  Redess(false);
-  ClearObjet();
 }
-
