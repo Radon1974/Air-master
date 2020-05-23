@@ -1413,7 +1413,8 @@ function Cree_Exhaust(Xe, Ye) {
 
 //Отобразить выхлоп
 function Affiche_Exhaust(Numero, C) {
-  Couleur(C)
+  if (Exhaust[Numero].Etat_Alim == 0) {Couleur(C)} else { Couleur('#FF0000') }
+  
   Ligne(Exhaust[Numero].X, Exhaust[Numero].Y, Exhaust[Numero].X, Exhaust[Numero].Y - 20);
   Triangle2(Exhaust[Numero].X + 10, Exhaust[Numero].Y - 20, Exhaust[Numero].X - 10, Exhaust[Numero].Y - 20, Exhaust[Numero].X, Exhaust[Numero].Y - 35, false)
   Couleur('#000000');
