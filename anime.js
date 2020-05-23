@@ -62,7 +62,7 @@ function Min(a, b) {
 
 
 
-//
+
 
 
 //Анимация
@@ -82,6 +82,7 @@ function Anime1() {  // Выполнение анимации компонент
     //Управление часами
     //Affiche_Temps(20, 30, true);
     //while (true) {
+    
 
     for (let Pour = 1; Pour <= Nb_Distributeur; Pour++) {
         if (!(['_4_3', '_5_3'].includes(Distributeur[Pour].Modele))) {
@@ -158,8 +159,8 @@ function Anime2() {  // Выполнение анимации компонент
 
         return;
     }
-    Raz();
-
+    if ( RazEtap == 1 ) {Raz(), RazEtap = 0 };  //Очистка всех значений давления
+    Raz_Alim();  //Очистка значений присоединения к источнику силового давления
     
     for (let Pour = 1; Pour <= Nb_Canal_Pilote; Pour++) { for (Pour2 = 1; Pour2 <= 2; Pour2++) { if (Canal_Pilote[Pour].Bout[Pour2].Quoi == 'Une_Alim_Pilote') { Canal_Pilote[Pour].Etat = Un } } }
     for (let Pour = 1; Pour <= Nb_Canal; Pour++) { Canal[Pour].Etat = Zero }
@@ -350,6 +351,7 @@ function Anime2() {  // Выполнение анимации компонент
         for (Pour2 = 1; Pour2 <= 2; Pour2++) {
             if (Canal[Pour].Bout[Pour2].Quoi == 'Une_Alim') {
                 Canal[Pour].Etat = Un;
+                Canal[Pour].Etat_Alim = Un;
                 for (Pour3 = 1; Pour3 <= Nb_Alimentation; Pour3++) {
                     for (Pour4 = 1; Pour4 <= Canal[Pour].NbPoint; Pour4++) {
                         if (Canal[Pour].ParcoursX[Pour4] == AliMentation[Pour3].X && Canal[Pour].ParcoursY[Pour4] == AliMentation[Pour3].Y) { 
@@ -368,7 +370,7 @@ function Anime2() {  // Выполнение анимации компонент
                 for (Pour2 = 1; Pour2 <= 2; Pour2++) {
                     if (Canal[Pour].Bout[Pour2].Quoi == 'Un_Carrefour') {
                         Carrefour[Canal[Pour].Bout[Pour2].Lequel].Etat = Canal[Pour].Etat;
-
+                        Carrefour[Canal[Pour].Bout[Pour2].Lequel].Etat_Alim = Canal[Pour].Etat_Alim;
                     }
                 }
             }
@@ -379,6 +381,7 @@ function Anime2() {  // Выполнение анимации компонент
                 for (Pour2 = 1; Pour2 <= 2; Pour2++) {
                     if (Canal[Pour].Bout[Pour2].Quoi == 'Un_Manometr') {
                         Manometr[Canal[Pour].Bout[Pour2].Lequel].Etat = Canal[Pour].Etat;
+                        Manometr[Canal[Pour].Bout[Pour2].Lequel].Etat_Alim = Canal[Pour].Etat_Alim;
                         if (Manometr[Canal[Pour].Bout[Pour2].Lequel].Pressure == 0) { Manometr[Canal[Pour].Bout[Pour2].Lequel].Pressure = Canal[Pour].Pressure }
                         Manometr[Canal[Pour].Bout[Pour2].Lequel].View = 1;
                     }
@@ -390,7 +393,7 @@ function Anime2() {  // Выполнение анимации компонент
             if ([Bouche, Un].includes(Canal[Pour].Etat)) {
                 for (Pour2 = 1; Pour2 <= 2; Pour2++) {
                     if (Canal[Pour].Bout[Pour2].Quoi == 'Un_Exhaust') {
-                        Exhaust[Canal[Pour].Bout[Pour2].Lequel].Etat = Canal[Pour].Etat;
+                        Exhaust[Canal[Pour].Bout[Pour2].Lequel].Etat_Alim = Canal[Pour].Etat_Alim;
                     }
                 }
             }
@@ -403,17 +406,20 @@ function Anime2() {  // Выполнение анимации компонент
                     if (Canal[Pour].Bout[Pour2].Quoi == 'Un_D') {
                         if (Canal[Pour].Bout[Pour2].Branchement == 1) {
                             Distributeur[Canal[Pour].Bout[Pour2].Lequel].Etat_Ext[Canal[Pour].Bout[Pour2].Branchement] = Canal[Pour].Etat
+                            Distributeur[Canal[Pour].Bout[Pour2].Lequel].Etat_Alim[Canal[Pour].Bout[Pour2].Branchement] = Canal[Pour].Etat_Alim
                         }
                     }
                 }
                 for (let Pour2 = 1; Pour2 <= 2; Pour2++) {
                     if (Canal[Pour].Bout[Pour2].Quoi == 'Un_V') {
                         Verin[Canal[Pour].Bout[Pour2].Lequel].Etat_Ext[Canal[Pour].Bout[Pour2].Branchement] = Canal[Pour].Etat;
+                        Verin[Canal[Pour].Bout[Pour2].Lequel].Etat_Alim[Canal[Pour].Bout[Pour2].Branchement] = Canal[Pour].Etat_Alim;
                     }
                 }
                 for (let Pour2 = 1; Pour2 <= 2; Pour2++) {
                     if (Canal[Pour].Bout[Pour2].Quoi == 'Un_Valve') {
                         Valve[Canal[Pour].Bout[Pour2].Lequel].Etat_Ext[Canal[Pour].Bout[Pour2].Branchement] = Canal[Pour].Etat;
+                        Valve[Canal[Pour].Bout[Pour2].Lequel].Etat_Alim[Canal[Pour].Bout[Pour2].Branchement] = Canal[Pour].Etat_Alim;
                         if (Valve[Canal[Pour].Bout[Pour2].Lequel].Modele == 'Check_valve') {
                             if (Valve[Canal[Pour].Bout[Pour2].Lequel].Etat_Ext[1] == 0) {
                                 Valve[Canal[Pour].Bout[Pour2].Lequel].Etat = 1;
@@ -428,12 +434,15 @@ function Anime2() {  // Выполнение анимации компонент
             if (Valve[Pour].Etat == 1 && (Valve[Pour].Etat_Ext[1] == 1 || Valve[Pour].Etat_Ext[2] == 1) || Valve[Pour].Modele == 'Check_valve') {
                 if (Valve[Pour].Modele == 'Check_valve' && Valve[Pour].Etat_Ext[2] == 1) {
                     Valve[Pour].Etat_Ext[1] = 0;
+                    Valve[Pour].Etat_Alim[1] = 0;
                 }
                 if (Valve[Pour].Modele == 'Check_valve' && Valve[Pour].Etat_Ext[1] == 1) {
                     Valve[Pour].Etat_Ext[1] = 1, Valve[Pour].Etat_Ext[2] = 1;
+                    Valve[Pour].Etat_Alim[1] = 1, Valve[Pour].Etat_Alim[2] = 1;
                 }
                 if (Valve[Pour].Modele == 'Shutoff_valve') {
                     Valve[Pour].Etat_Ext[1] = 1, Valve[Pour].Etat_Ext[2] = 1;
+                    Valve[Pour].Etat_Alim[1] = 1, Valve[Pour].Etat_Alim[2] = 1;
                 }
             };
         }
@@ -443,13 +452,24 @@ function Anime2() {  // Выполнение анимации компонент
                 switch (Distributeur[Pour].Etat) {
                     case 1:
                         Distributeur[Pour].Etat_Ext[3] = Distributeur[Pour].Etat_Ext[1];
-                        if (Distributeur[Pour].Modele == '_2_2_') { Distributeur[Pour].Etat_Ext[4] = Distributeur[Pour].Etat_Ext[1] }
-                        if (Distributeur[Pour].Modele == '_2_2') { Distributeur[Pour].Etat_Ext[4] = Bouche }
+                        Distributeur[Pour].Etat_Alim[3] = Distributeur[Pour].Etat_Alim[1];
+                        if (Distributeur[Pour].Modele == '_2_2_') { 
+                            Distributeur[Pour].Etat_Ext[4] = Distributeur[Pour].Etat_Ext[1];
+                            Distributeur[Pour].Etat_Alim[4] = Distributeur[Pour].Etat_Alim[1];
+                        }
+                        if (Distributeur[Pour].Modele == '_2_2') { 
+                            Distributeur[Pour].Etat_Ext[4] = Bouche;
+                            Distributeur[Pour].Etat_Alim[4] = Un;   //Проверить
+                        }
                         break;
                     case 2:
                         if (!(Distributeur[Pour].Modele == '_2_2_')) {
-                            Distributeur[Pour].Etat_Ext[4] = Distributeur[Pour].Etat_Ext[1]
-                        } else { Distributeur[Pour].Etat_Ext[4] = Bouche }
+                            Distributeur[Pour].Etat_Ext[4] = Distributeur[Pour].Etat_Ext[1];
+                            Distributeur[Pour].Etat_Alim[4] = Distributeur[Pour].Etat_Alim[1];
+                        } else { 
+                            Distributeur[Pour].Etat_Ext[4] = Bouche;
+                            Distributeur[Pour].Etat_Alim[4] = Un;   //Проверить
+                        }
                         break;
                 }
             } else {
@@ -458,13 +478,17 @@ function Anime2() {  // Выполнение анимации компонент
 
                     case 1:
                         Distributeur[Pour].Etat_Ext[3] = Bouche;
+                        Distributeur[Pour].Etat_Alim[3] = Un;   //Проверить
                         Distributeur[Pour].Etat_Ext[4] = Bouche;
+                        Distributeur[Pour].Etat_Ext[4] = Un;    //Проверить
                         break;
                     case 2:
                         Distributeur[Pour].Etat_Ext[4] = Distributeur[Pour].Etat_Ext[1];
+                        Distributeur[Pour].Etat_Alim[4] = Distributeur[Pour].Etat_Alim[1];
                         break;
                     case 3:
                         Distributeur[Pour].Etat_Ext[3] = Distributeur[Pour].Etat_Ext[1];
+                        Distributeur[Pour].Etat_Alim[3] = Distributeur[Pour].Etat_Alim[1];
                         break;
                 }
             }
@@ -476,7 +500,8 @@ function Anime2() {  // Выполнение анимации компонент
                 for (let Pour2 = 1; Pour2 <= 2; Pour2++) {
                     if (Canal[Pour].Bout[Pour2].Quoi == 'Un_D') {
                         if ([Bouche, Un].includes(Distributeur[Canal[Pour].Bout[Pour2].Lequel].Etat_Ext[Canal[Pour].Bout[Pour2].Branchement])) {
-                            Canal[Pour].Etat = Distributeur[Canal[Pour].Bout[Pour2].Lequel].Etat_Ext[Canal[Pour].Bout[Pour2].Branchement]
+                            Canal[Pour].Etat = Distributeur[Canal[Pour].Bout[Pour2].Lequel].Etat_Ext[Canal[Pour].Bout[Pour2].Branchement];
+                            Canal[Pour].Etat_Alim = Distributeur[Canal[Pour].Bout[Pour2].Lequel].Etat_Alim[Canal[Pour].Bout[Pour2].Branchement];
                         }
                     }
                 }
@@ -485,6 +510,7 @@ function Anime2() {  // Выполнение анимации компонент
                     if (Canal[Pour].Bout[Pour2].Quoi == 'Un_Carrefour') {
                         if ([Bouche, Un].includes(Carrefour[Canal[Pour].Bout[Pour2].Lequel].Etat)) {
                             Canal[Pour].Etat = Carrefour[Canal[Pour].Bout[Pour2].Lequel].Etat;
+                            Canal[Pour].Etat_Alim = Carrefour[Canal[Pour].Bout[Pour2].Lequel].Etat_Alim;
                         }
                     }
                 }
@@ -493,6 +519,7 @@ function Anime2() {  // Выполнение анимации компонент
                     if (Canal[Pour].Bout[Pour2].Quoi == 'Un_Manometr') {
                         if ([Bouche, Un].includes(Manometr[Canal[Pour].Bout[Pour2].Lequel].Etat)) {
                             Canal[Pour].Etat = Manometr[Canal[Pour].Bout[Pour2].Lequel].Etat;
+                            Canal[Pour].Etat_Alim = Manometr[Canal[Pour].Bout[Pour2].Lequel].Etat_Alim;
                         }
                     }
                 }
@@ -500,7 +527,8 @@ function Anime2() {  // Выполнение анимации компонент
                 for (let Pour2 = 1; Pour2 <= 2; Pour2++) {
                     if (Canal[Pour].Bout[Pour2].Quoi == 'Un_Valve') {
                         if ([Bouche, Un].includes(Valve[Canal[Pour].Bout[Pour2].Lequel].Etat_Ext[Canal[Pour].Bout[Pour2].Branchement])) {
-                            Canal[Pour].Etat = Valve[Canal[Pour].Bout[Pour2].Lequel].Etat_Ext[Canal[Pour].Bout[Pour2].Branchement]
+                            Canal[Pour].Etat = Valve[Canal[Pour].Bout[Pour2].Lequel].Etat_Ext[Canal[Pour].Bout[Pour2].Branchement];
+                            Canal[Pour].Etat_Alim = Valve[Canal[Pour].Bout[Pour2].Lequel].Etat_Alim[Canal[Pour].Bout[Pour2].Branchement];
                         }
                     }
                 }
@@ -514,7 +542,7 @@ function Anime2() {  // Выполнение анимации компонент
             if (Canal[Pour].Bout[Pour2].Quoi == 'Un_Exhaust') {
                 for (Pour3 = 1; Pour3 <= Nb_Exhaust; Pour3++) {
                     for (Pour4 = 1; Pour4 <= Canal[Pour].NbPoint; Pour4++) {
-                        if (Canal[Pour].ParcoursX[Pour4] == Exhaust[Pour3].X && Canal[Pour].ParcoursY[Pour4] == Exhaust[Pour3].Y && Exhaust[Pour3].Etat == Zero) {
+                        if (Canal[Pour].ParcoursX[Pour4] == Exhaust[Pour3].X && Canal[Pour].ParcoursY[Pour4] == Exhaust[Pour3].Y && Exhaust[Pour3].Etat_Alim == Zero) {
                             Canal[Pour].Etat = Zero;
                             Canal[Pour].Pressure = Zero;
                         }

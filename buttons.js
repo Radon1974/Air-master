@@ -199,6 +199,7 @@ function Timer2Timer(Sender) {
   //PetitMenu('#00FF00', '<Выполнить>   Нажмите или удерживайте часы, чтобы пошло время' + ' Левая кнопка: Действие    Правая кнопка: Назад ');
   //L_Action = 'Action';
   //Pointe_Objet( L_Action, '#0000FF'); //Выбор компонента
+  RazEtap = 1;
   Fichiermodifie = true;
   ActionMouse = 'Anime';
   Mouse1Click()
@@ -209,7 +210,7 @@ function Timer2Timer(Sender) {
 //Непрерывный запуск кнопка
 function Continu1Click() {
   //Cacommence();
-  
+  RazEtap = 1;
   Pasapas = false;
   Anime1();
   

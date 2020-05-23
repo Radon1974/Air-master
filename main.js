@@ -4,7 +4,7 @@ var canvas = document.getElementById("myCanvas"),
   h = canvas.height;
 
   document.oncontextmenu = function (){return false};  //Запретить выпадающее меню в браузере
-
+  document.onmousedown = document.onselectstart = function() {return false};  //Запретить выделения текста в браузере
 
 
 
@@ -248,7 +248,7 @@ function Mouse1Click() {
       Pasapas = true;
       Anime1();
       Redess(false);
-      PetitMenu('#00FF00', '<Выполнить>   Нажмите или удерживайте часы, чтобы пошло время' + ' Левая кнопка: Действие    Правая кнопка: Назад ');
+      PetitMenu('#00FF00', '<Выполнить>   Нажмите  Левую кнопку: Пошаговый запуск    Правая кнопка: Назад ');
       L_Action = 'Action';
       Pointe_Objet(L_Action, '#0000FF'); //Выбор компонента
 
@@ -281,7 +281,7 @@ function Mouse1Click() {
         Pasapas = true;
         //Anime1();
   
-        PetitMenu('#00FF00', '<Выполнить>   Нажмите или удерживайте часы, чтобы пошло время' + ' Левая кнопка: Действие    Правая кнопка: Назад ');
+        PetitMenu('#00FF00', '<Выполнить>   Нажмите  Левую кнопку: Непрерывный запуск    Правая кнопка: Назад ');
         L_Action = 'Action';
         Pointe_Objet(L_Action, '#0000FF'); //Выбор компонента
 
@@ -407,7 +407,7 @@ var Compteursouris = 0;
 var Facteur = 1, Vieux_Facteur = 0, XG = 0, YG = 0;
 var Textenter = '', Heure = false, Prox2 = 0, Objet2 = '', Celui_La2 = 0, Quoi_Donc2 = '', Lax2 = 0, Lay2 = 0;
 var Puissance = true, Ext = true, Debut = true, XL = 0, YL = 0, Old_XL = 0, Old_YL = 0, XFin = 0, YFin = 0;
-var Pointe_Quoi = '', timerId = 0;
+var Pointe_Quoi = '', timerId = 0, RazEtap = 0;
 //Distributeur.append()
 
 
@@ -417,6 +417,7 @@ function NewDistributeur(i) {
     X: 0,       //Координата X гидрораспределителя
     Y: 0,       //Координата Y гидрораспределителя
     Etat_Ext: [],
+    Etat_Alim: [],
     ExtX: [],   //Координата X точки присоединения к распределителю 
     ExtY: [],   //Координата Y точки присоединения к распределителю 
     Com: [{
@@ -457,6 +458,7 @@ function NewVerin(i) {
     Y: 0,
     Tige: 0,
     Etat_Ext: [],
+    Etat_Alim: [],
     EntreeX: [],
     EntreeY: [],
     Modele: ''
@@ -484,6 +486,7 @@ function NewCanal(i) {
     ParcoursX: [],
     ParcoursY: [],
     Etat: 0,
+    Etat_Alim: 0,
     Pressure: 0, //Давление в линии
     Bout: [{
       Quoi: '',
@@ -568,7 +571,8 @@ function NewCarrefour(i) {
   Carrefour[i] = {
     X: 0,
     Y: 0,
-    Etat: 0
+    Etat: 0,
+    Etat_Alim: 0
   }
   
 }
@@ -601,7 +605,8 @@ function NewValve(i) {
     Valve[i] = {
       X: 0,           //Координата X запорной арматуры
       Y: 0,           //Координата Y запорной арматуры
-      Etat_Ext: [],   //Количество точек подключения
+      Etat_Ext: [],   //Точки которые подключены
+      Etat_Alim: [],
       Etat: 0,       //Состояние запорной арматуры 1 - открыта, 2 - закрыта
       EntreeX: [],    //Координата X точки подключения
       EntreeY: [],    //Координата Y точки подключения
@@ -616,6 +621,7 @@ function NewManometr(i) {
     X: 0,           //Координата X манометра
     Y: 0,           //Координата Y манометра
     Etat: 0,        //Состояние манометра 1 - есть давление, 0 - нет давления
+    Etat_Alim: 0,
     Pressure: 0,    //Давление в линии
     View: 0         //Отображение цифр на манометре 1 - отображаются, 2 - не отображаются
   }
@@ -627,7 +633,7 @@ function NewExhaust(i) {
   Exhaust[i] = {
     X: 0,           //Координата X выхлопа
     Y: 0,           //Координата Y выхлопа
-    Etat: 0,        //Состояние выхлопа 1 - соединен с источником давления , 0 - не соединен с источником давления
+    Etat_Alim: 0,        //Состояние выхлопа 1 - соединен с источником давления , 0 - не соединен с источником давления
   }
 
 }

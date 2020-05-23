@@ -2,16 +2,26 @@
 
 function Raz() {
   for (let i = 1; i <= Nb_Canal; i++) { Canal[i].Etat = Zero, Canal[i].Pressure = Zero }
-  for (let i = 1; i <= Nb_Distributeur; i++) { for (let k = -1; k <= 5; k++) { Distributeur[i].Etat_Ext[k] = 0 } }
-  for (let i = 1; i <= Nb_Memoire; i++) { for (let k = 1; k <= 4; k++) { Memoire[i].Etat_Ext[k] = 0 } }
-  for (let i = 1; i <= Nb_Sequenceur; i++) { for (let k = 1; k <= 22; k++) { Sequenceur[i].Etat_Ext[k] = 0 } }
+  for (let i = 1; i <= Nb_Distributeur; i++) { for (let k = -1; k <= 5; k++) { Distributeur[i].Etat_Ext[k] = Zero } }
+  for (let i = 1; i <= Nb_Memoire; i++) { for (let k = 1; k <= 4; k++) { Memoire[i].Etat_Ext[k] = Zero } }
+  for (let i = 1; i <= Nb_Sequenceur; i++) { for (let k = 1; k <= 22; k++) { Sequenceur[i].Etat_Ext[k] = Zero } }
   for (let i = 1; i <= Nb_Canal_Pilote; i++) { Canal_Pilote[i].Etat = Bof }
   for (let i = 1; i <= Nb_Capteur; i++) { for (let k = 1; k <= 3; k++) { Capteur[i].Etat_Ext[k] = Bof } }
-  for (let i = 1; i <= Nb_Verin; i++) { for (let k = 1; k <= 2; k++) { Verin[i].Etat_Ext[k] = 0 } }
+  for (let i = 1; i <= Nb_Verin; i++) { for (let k = 1; k <= 2; k++) { Verin[i].Etat_Ext[k] = Zero } }
   for (let i = 1; i <= Nb_Carrefour; i++) { Carrefour[i].Etat = Zero }
   for (let i = 1; i <= Nb_Carrefour_Pilote; i++) { Carrefour_Pilote[i].Etat = Bof }
-  for (let i = 1; i <= Nb_Valve; i++) { for (let k = 1; k <= 2; k++) { Valve[i].Etat_Ext[k] = 0 } }   //Проверить
+  for (let i = 1; i <= Nb_Valve; i++) { for (let k = 1; k <= 2; k++) { Valve[i].Etat_Ext[k] = Zero } }
   for (let i = 1; i <= Nb_Manometr; i++) { Manometr[i].Etat = Zero, Manometr[i].Pressure = Zero }
+}
+
+function Raz_Alim() {
+  for (let i = 1; i <= Nb_Canal; i++) { Canal[i].Etat_Alim = Zero }
+  for (let i = 1; i <= Nb_Distributeur; i++) { for (let k = -1; k <= 5; k++) { Distributeur[i].Etat_Alim[k] = Zero } }
+  for (let i = 1; i <= Nb_Verin; i++) { for (let k = 1; k <= 2; k++) { Verin[i].Etat_Alim[k] = Zero } }
+  for (let i = 1; i <= Nb_Carrefour; i++) { Carrefour[i].Etat_Alim = Zero }
+  for (let i = 1; i <= Nb_Valve; i++) { for (let k = 1; k <= 2; k++) { Valve[i].Etat_Alim[k] = Zero } }
+  for (let i = 1; i <= Nb_Manometr; i++) { Manometr[i].Etat_Alim = Zero }
+  for (let i = 1; i <= Nb_Exhaust; i++) { Exhaust[i].Etat_Alim = Zero }
 }
 
 //Старый обнуление
