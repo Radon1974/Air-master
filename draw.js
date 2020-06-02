@@ -15,13 +15,13 @@ function Raz() {
 }
 
 function Raz_Alim() {
-  for (let i = 1; i <= Nb_Canal; i++) { Canal[i].Etat_Alim = Zero }
-  for (let i = 1; i <= Nb_Distributeur; i++) { for (let k = -1; k <= 5; k++) { Distributeur[i].Etat_Alim[k] = Zero } }
-  for (let i = 1; i <= Nb_Verin; i++) { for (let k = 1; k <= 2; k++) { Verin[i].Etat_Alim[k] = Zero } }
-  for (let i = 1; i <= Nb_Carrefour; i++) { Carrefour[i].Etat_Alim = Zero }
-  for (let i = 1; i <= Nb_Valve; i++) { for (let k = 1; k <= 2; k++) { Valve[i].Etat_Alim[k] = Zero } }
-  for (let i = 1; i <= Nb_Manometr; i++) { Manometr[i].Etat_Alim = Zero }
-  for (let i = 1; i <= Nb_Exhaust; i++) { Exhaust[i].Etat_Alim = Zero }
+  for (let i = 1; i <= Nb_Canal; i++) { Canal[i].Alim_Exhaust = Zero }
+  for (let i = 1; i <= Nb_Distributeur; i++) { for (let k = -1; k <= 5; k++) { Distributeur[i].Alim_Exhaust[k] = Zero } }
+  for (let i = 1; i <= Nb_Verin; i++) { for (let k = 1; k <= 2; k++) { Verin[i].Alim_Exhaust[k] = Zero } }
+  for (let i = 1; i <= Nb_Carrefour; i++) { Carrefour[i].Alim_Exhaust = Zero }
+  for (let i = 1; i <= Nb_Valve; i++) { for (let k = 1; k <= 2; k++) { Valve[i].Alim_Exhaust[k] = Zero } }
+  for (let i = 1; i <= Nb_Manometr; i++) { Manometr[i].Alim_Exhaust = Zero }
+  for (let i = 1; i <= Nb_Exhaust; i++) { Exhaust[i].Alim_Exhaust = Zero }
 }
 
 //Старый обнуление
@@ -1413,7 +1413,7 @@ function Cree_Exhaust(Xe, Ye) {
 
 //Отобразить выхлоп
 function Affiche_Exhaust(Numero, C) {
-  if (Exhaust[Numero].Etat_Alim == 0) {Couleur(C)} else { Couleur('#FF0000') }
+  if (Exhaust[Numero].Alim_Exhaust == 0) {Couleur(C)} else { Couleur('#FF0000') }
   
   Ligne(Exhaust[Numero].X, Exhaust[Numero].Y, Exhaust[Numero].X, Exhaust[Numero].Y - 20);
   Triangle2(Exhaust[Numero].X + 10, Exhaust[Numero].Y - 20, Exhaust[Numero].X - 10, Exhaust[Numero].Y - 20, Exhaust[Numero].X, Exhaust[Numero].Y - 35, false)

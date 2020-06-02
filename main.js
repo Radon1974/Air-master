@@ -3,8 +3,8 @@ var canvas = document.getElementById("myCanvas"),
   w = canvas.width,
   h = canvas.height;
 
-  document.oncontextmenu = function (){return false};  //Запретить выпадающее меню в браузере
-  document.onmousedown = document.onselectstart = function() {return false};  //Запретить выделения текста в браузере
+document.oncontextmenu = function () { return false };  //Запретить выпадающее меню в браузере
+document.onmousedown = document.onselectstart = function () { return false };  //Запретить выделения текста в браузере
 
 
 
@@ -266,26 +266,26 @@ function Mouse1Click() {
 
     //++++++++++++++++++++++++++++++++++++++  
     case 'Anime1':        //Выбор положения при нажатии
-      
-        Heure = true;
-        Pointe_Objet2(Objet2, Prox2); //Выбор компонента
-        Anime2();
-        
-      
+
+      Heure = true;
+      Pointe_Objet2(Objet2, Prox2); //Выбор компонента
+      Anime2();
+
+
       Redess(false);
-      
-      ActionMouse = 'Anime'; 
-      
+
+      ActionMouse = 'Anime';
+
       if (['Un_D', 'Un_Cap'].includes(Objet2)) {
 
         Pasapas = true;
         //Anime1();
-  
+
         PetitMenu('#00FF00', '<Выполнить>   Нажмите  Левую кнопку: Непрерывный запуск    Правая кнопка: Назад ');
         L_Action = 'Action';
         Pointe_Objet(L_Action, '#0000FF'); //Выбор компонента
 
-        
+
         ActionMouse = 'Anime1'
       }
       funcCursor("default");
@@ -391,11 +391,11 @@ var Str16 = ''; //Можно убрать
 //Переменные
 var Nb_Verin = 0, Nb_Distributeur = 0, Nb_Commande = 0, Nb_Canal = 0, Nb_Alimentation = 0, Nb_Capteur = 0;
 var Nb_Alim_Pilote = 0, Nb_Canal_Pilote = 0, Nb_Carrefour = 0, Nb_Carrefour_Pilote = 0, Nb_Memoire = 0;
-var Nb_Sequenceur = 0, Nb_Valve = 0, Nb_Manometr = 0, Nb_Exhaust = 0, Nb_Texte = 0; 
+var Nb_Sequenceur = 0, Nb_Valve = 0, Nb_Manometr = 0, Nb_Exhaust = 0, Nb_Texte = 0;
 var G_Pour = 0, G_K = 0, X_s = 0, Y_s = 0, Nb_Point = 0;
 var Vieux_Nb_Verin = 0, Vieux_Nb_Distributeur = 0, Vieux_Nb_Capteur = 0, Vieux_Nb_Alim = 0;
 var Vieux_Nb_Alim_Pilote = 0, Vieux_Nb_Carrefour = 0, Vieux_Nb_Carrefour_Pilote = 0, Vieux_Nb_Commande = 0;
-var Vieux_Nb_Canal = 0, Vieux_Nb_Canal_Pilote = 0, Vieux_Nb_Memoire = 0, Vieux_Nb_Sequenceur = 0, Vieux_Nb_Valve = 0; 
+var Vieux_Nb_Canal = 0, Vieux_Nb_Canal_Pilote = 0, Vieux_Nb_Memoire = 0, Vieux_Nb_Sequenceur = 0, Vieux_Nb_Valve = 0;
 var Vieux_Nb_Manometr = 0, Vieux_Nb_Exhaust = 0, Vieux_Nb_Texte = 0;
 var Heur = 0, Minute = 0, Seconde = 0, Sec100 = 0;
 
@@ -412,12 +412,12 @@ var Pointe_Quoi = '', timerId = 0, RazEtap = 0;
 
 
 function NewDistributeur(i) {
-  
+
   Distributeur[i] = {
     X: 0,       //Координата X гидрораспределителя
     Y: 0,       //Координата Y гидрораспределителя
     Etat_Ext: [],
-    Etat_Alim: [],
+    Alim_Exhaust: [],
     ExtX: [],   //Координата X точки присоединения к распределителю 
     ExtY: [],   //Координата Y точки присоединения к распределителю 
     Com: [{
@@ -433,11 +433,11 @@ function NewDistributeur(i) {
     Modele: '',   ////Модель распределителя
     Etat: 0   //Положение распределителя 1 или 2
   }
-  
+
 }
 
 function NewSequenceur(i) {
-  
+
   Sequenceur[i] = {
     X: 0,
     Y: 0,
@@ -448,37 +448,37 @@ function NewSequenceur(i) {
     Etat: 0,
     Combien: 0
   }
-  
+
 }
 
 function NewVerin(i) {
-  
+
   Verin[i] = {
     X: 0,
     Y: 0,
     Tige: 0,
     Etat_Ext: [],
-    Etat_Alim: [],
+    Alim_Exhaust: [],
     EntreeX: [],
     EntreeY: [],
     Modele: ''
   }
-  
+
 }
 
 function NewCommande(i) {
-  
+
   Commande[i] = {
     X: 0,
     Y: 0,
     Etat: 0,
     Modele: ''
   }
-  
+
 }
 
 function NewCanal(i) {
-  
+
   Canal[i] = {
     X: 0,
     Y: 0,
@@ -486,7 +486,7 @@ function NewCanal(i) {
     ParcoursX: [],
     ParcoursY: [],
     Etat: 0,
-    Etat_Alim: 0,
+    Alim_Exhaust: 0,
     Pressure: 0, //Давление в линии
     Bout: [{
       Quoi: '',
@@ -502,11 +502,11 @@ function NewCanal(i) {
       Branchement: 0
     }]
   }
-  
+
 }
 
 function NewCanal_Pilote(i) {
-  
+
   Canal_Pilote[i] = {
     X: 0,
     Y: 0,
@@ -528,30 +528,30 @@ function NewCanal_Pilote(i) {
       Branchement: 0
     }]
   }
-  
+
 }
 
 function NewAliMentation(i) {
-  
+
   AliMentation[i] = {
     X: 0,
     Y: 0,
     Pressure: 0 //Давление в линии
   }
-  
+
 }
 
 function NewAlim_Pilote(i) {
-  
+
   Alim_Pilote[i] = {
     X: 0,
     Y: 0
   }
-  
+
 }
 
 function NewCapteur(i) {
-  
+
   Capteur[i] = {
     X: 0,
     Y: 0,
@@ -563,32 +563,32 @@ function NewCapteur(i) {
     Lie_a: 0,
     Position: 0
   }
-  
+
 }
 
 function NewCarrefour(i) {
-  
+
   Carrefour[i] = {
     X: 0,
     Y: 0,
     Etat: 0,
-    Etat_Alim: 0
+    Alim_Exhaust: 0
   }
-  
+
 }
 
 function NewCarrefour_Pilote(i) {
-  
+
   Carrefour_Pilote[i] = {
     X: 0,
     Y: 0,
     Etat: 0
   }
-  
+
 }
 
 function NewMemoire(i) {
-  
+
   Memoire[i] = {
     X: 0,
     Y: 0,
@@ -597,31 +597,31 @@ function NewMemoire(i) {
     ExtY: [],
     Etat: 0
   }
-  
+
 }
 
 function NewValve(i) {
-  
-    Valve[i] = {
-      X: 0,           //Координата X запорной арматуры
-      Y: 0,           //Координата Y запорной арматуры
-      Etat_Ext: [],   //Точки которые подключены
-      Etat_Alim: [],
-      Etat: 0,       //Состояние запорной арматуры 1 - открыта, 2 - закрыта
-      EntreeX: [],    //Координата X точки подключения
-      EntreeY: [],    //Координата Y точки подключения
-      Modele: ''      //Тип запорной арматуры
+
+  Valve[i] = {
+    X: 0,           //Координата X запорной арматуры
+    Y: 0,           //Координата Y запорной арматуры
+    Etat_Ext: [],   //Точки которые подключены
+    Alim_Exhaust: [],
+    Etat: 0,       //Состояние запорной арматуры 1 - открыта, 2 - закрыта
+    EntreeX: [],    //Координата X точки подключения
+    EntreeY: [],    //Координата Y точки подключения
+    Modele: ''      //Тип запорной арматуры
   }
-  
+
 }
 
 function NewManometr(i) {
-  
+
   Manometr[i] = {
     X: 0,           //Координата X манометра
     Y: 0,           //Координата Y манометра
     Etat: 0,        //Состояние манометра 1 - есть давление, 0 - нет давления
-    Etat_Alim: 0,
+    Alim_Exhaust: 0,
     Pressure: 0,    //Давление в линии
     View: 0         //Отображение цифр на манометре 1 - отображаются, 2 - не отображаются
   }
@@ -629,24 +629,23 @@ function NewManometr(i) {
 }
 
 function NewExhaust(i) {
-  
+
   Exhaust[i] = {
     X: 0,           //Координата X выхлопа
     Y: 0,           //Координата Y выхлопа
-    Etat_Alim: 0,        //Состояние выхлопа 1 - соединен с источником давления , 0 - не соединен с источником давления
   }
 
 }
 
 function NewTexte(i) {
-  
+
   Texte[i] = {
     X: 0,
     Y: 0,
     Lataille: 0,
     Le_Texte: ''
   }
-  
+
 }
 
 
