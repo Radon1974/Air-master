@@ -536,7 +536,7 @@ function NewAliMentation(i) {
   AliMentation[i] = {
     X: 0,
     Y: 0,
-    Pressure: 0 //Давление в линии
+    Pressure: 1 //Давление в линии
   }
 
 }

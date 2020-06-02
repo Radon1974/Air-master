@@ -514,13 +514,14 @@ function Anime2() {  // Выполнение анимации компонент
             if (Canal[Pour].Bout[Pour2].Quoi == 'Une_Alim') {
                 Canal[Pour].Etat = Un;
                 Canal[Pour].Alim_Exhaust = 1;
-                for (Pour3 = 1; Pour3 <= Nb_Alimentation; Pour3++) {
+                Canal[Pour].Pressure = AliMentation[Canal[Pour].Bout[Pour2].Lequel].Pressure
+                /*for (Pour3 = 1; Pour3 <= Nb_Alimentation; Pour3++) {
                     for (Pour4 = 1; Pour4 <= Canal[Pour].NbPoint; Pour4++) {
                         if (Canal[Pour].ParcoursX[Pour4] == AliMentation[Pour3].X && Canal[Pour].ParcoursY[Pour4] == AliMentation[Pour3].Y) {
                             Canal[Pour].Pressure = AliMentation[Pour3].Pressure
                         }
                     }
-                }
+                }*/
             }
         }
     }
@@ -582,7 +583,7 @@ function Anime2() {  // Выполнение анимации компонент
                     if (Canal[Pour].Bout[Pour2].Quoi == 'Un_Valve') {
                         Valve[Canal[Pour].Bout[Pour2].Lequel].Etat_Ext[Canal[Pour].Bout[Pour2].Branchement] = Canal[Pour].Etat;
                         Valve[Canal[Pour].Bout[Pour2].Lequel].Alim_Exhaust[Canal[Pour].Bout[Pour2].Branchement] = Canal[Pour].Alim_Exhaust;
-                        if (Valve[Canal[Pour].Bout[Pour2].Lequel].Etat == 1) {
+                        if (Valve[Canal[Pour].Bout[Pour2].Lequel].Etat == 1) {  //Если кран открыт, то присваивается 1 входу и выходу крана
                             if (Canal[Pour].Bout[Pour2].Branchement == 1) {
                                 Valve[Canal[Pour].Bout[Pour2].Lequel].Etat_Ext[2] = 1;
                                 Valve[Canal[Pour].Bout[Pour2].Lequel].Alim_Exhaust[2] = 1;
@@ -702,7 +703,7 @@ function Anime2() {  // Выполнение анимации компонент
                 if (Canal[Pour].Bout[Pour2].Quoi == 'Un_Valve') {
                     if ([Bouche, Un].includes(Valve[Canal[Pour].Bout[Pour2].Lequel].Etat_Ext[Canal[Pour].Bout[Pour2].Branchement])) {
                         Canal[Pour].Etat = Valve[Canal[Pour].Bout[Pour2].Lequel].Etat_Ext[Canal[Pour].Bout[Pour2].Branchement];
-                        Canal[Pour].Alim_Exhaust = Valve[Canal[Pour].Bout[Pour2].Lequel].Alim_Exhaust[Canal[Pour].Bout[Pour2].Branchement];
+                        Canal[Pour].Alim_Exhaust = 1;
                     }
                 }
             }

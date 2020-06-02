@@ -1170,12 +1170,11 @@ function Cestfini() {  //
 
 
 //Создать питание
-function Cree_Alimentation(Xe, Ye, Pressure_Alimentation) {  //
+function Cree_Alimentation(Xe, Ye) {  //
   Nb_Alimentation++;
   NewAliMentation(Nb_Alimentation);
   AliMentation[Nb_Alimentation].X = Xe;
   AliMentation[Nb_Alimentation].Y = Ye;
-  AliMentation[Nb_Alimentation].Pressure = Pressure_Alimentation;
 }
 
 //Создать питание пилота
@@ -1413,7 +1412,8 @@ function Cree_Exhaust(Xe, Ye) {
 
 //Отобразить выхлоп
 function Affiche_Exhaust(Numero, C) {
-  if (Exhaust[Numero].Alim_Exhaust == 0) {Couleur(C)} else { Couleur('#FF0000') }
+  Couleur(C);
+  //if (Exhaust[Numero].Alim_Exhaust == 0) {Couleur(C)} else { Couleur('#FF0000') }
   
   Ligne(Exhaust[Numero].X, Exhaust[Numero].Y, Exhaust[Numero].X, Exhaust[Numero].Y - 20);
   Triangle2(Exhaust[Numero].X + 10, Exhaust[Numero].Y - 20, Exhaust[Numero].X - 10, Exhaust[Numero].Y - 20, Exhaust[Numero].X, Exhaust[Numero].Y - 35, false)

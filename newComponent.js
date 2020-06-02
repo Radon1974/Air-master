@@ -282,8 +282,8 @@ function Ajoute_Objet3(Objet, Lax, Lay, Quoi_Donc, Celui_La) {  //
       }
       break;
     case 'Une_Alim':
-      str = Ed('Ведите давление в формате: *.**', '', true);
-      Cree_Alimentation(Lax, Lay, Number(str));
+      //str = Ed('Ведите давление в формате: *.**', '', true);
+      Cree_Alimentation(Lax, Lay);  //Cree_Alimentation(Lax, Lay, Number(str));
       break;
     case 'Une_Alim_Pilote':
       Cree_Alim_Pilote(Lax, Lay);
