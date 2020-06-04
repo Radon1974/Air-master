@@ -1002,8 +1002,21 @@ function Affiche_Canal(Numero, Blanc) {  //
   Xe = 0;
   Ye = 0;
   ctx.lineWidth = 2; //Толщина линии 2
+  
 
-  if (!Blanc) { if (Canal[Numero].Etat == Un) { Couleur('#FF0000') } else { Couleur('#000000') } } else { Couleur('#000000') }
+  if (!Blanc) {
+    switch (Canal[Numero].Etat) {
+      case 0: Couleur('#000000');
+        break;
+      case 1: Couleur('#FF0000');
+        break;
+      case 2: Couleur('#00FF00');
+        break;
+      case 3: Couleur('#00FFFF');
+        break;  
+    }
+  }
+
   Xe = Canal[Numero].ParcoursX[1];
   Ye = Canal[Numero].ParcoursY[1];
 
@@ -1315,7 +1328,7 @@ function Cree_Valve(XC, YC, Modelec, L_Etat) {
   }
 
   Valve[Nb_Valve].Modele = Modelec;
-  Valve[Nb_Valve].Etat = L_Etat;
+  Valve[Nb_Valve].Position = L_Etat;
 
 }
 //Отобразить запорную арматуру
@@ -1331,7 +1344,7 @@ function Affiche_Valve(Numero, C, Blanc) {
 
   switch (Valve[Numero].Modele) {
     case 'Shutoff_valve':
-      if (Valve[Numero].Etat == 1) {
+      if (Valve[Numero].Position == 1) {
         Triangle2(Valve[Numero].X - 20, Valve[Numero].Y + 10, Valve[Numero].X - 20, Valve[Numero].Y - 10, Valve[Numero].X, Valve[Numero].Y, false);
         Triangle2(Valve[Numero].X + 20, Valve[Numero].Y + 10, Valve[Numero].X + 20, Valve[Numero].Y - 10, Valve[Numero].X, Valve[Numero].Y, false);
         Ligne(Valve[Numero].X - 20, Valve[Numero].Y, Valve[Numero].X - 30, Valve[Numero].Y);
@@ -1344,7 +1357,7 @@ function Affiche_Valve(Numero, C, Blanc) {
       }
       break;
     case 'Check_valve':
-      if (Valve[Numero].Etat == 1) {
+      if (Valve[Numero].Position == 1) {
         Ligne(Valve[Numero].X - 7, Valve[Numero].Y, Valve[Numero].X, Valve[Numero].Y - 8);
         Ligne(Valve[Numero].X - 7, Valve[Numero].Y, Valve[Numero].X, Valve[Numero].Y + 8);
         Cercle(Valve[Numero].X, Valve[Numero].Y, 5);
