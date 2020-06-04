@@ -1010,7 +1010,7 @@ function Affiche_Canal(Numero, Blanc) {  //
         break;
       case 1: Couleur('#FF0000');
         break;
-      case 2: Couleur('#00FF00');
+      case 2: Couleur('#FFA07A');
         break;
       case 3: Couleur('#00FFFF');
         break;  
