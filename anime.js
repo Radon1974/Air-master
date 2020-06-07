@@ -397,7 +397,7 @@ function Anime2() {  // Выполнение анимации компонент
 
                     if (Canal[Pour].Bout[Pour2].Quoi == 'Un_Valve') {
                         Valve[Canal[Pour].Bout[Pour2].Lequel].Alim_Exhaust[Canal[Pour].Bout[Pour2].Branchement] = Canal[Pour].Alim_Exhaust;
-                        if (Valve[Canal[Pour].Bout[Pour2].Lequel].Position == 1) {  //Если кран открыт, то присваивается 1 входу и выходу крана
+                        if (Valve[Canal[Pour].Bout[Pour2].Lequel].Position == 1 && Valve[Canal[Pour].Bout[Pour2].Lequel].Modele == 'Shutoff_valve') {  //Если кран открыт, то присваивается 1 входу и выходу крана
                             if (Canal[Pour].Bout[Pour2].Branchement == 1) {
                                 Valve[Canal[Pour].Bout[Pour2].Lequel].Alim_Exhaust[2] = 3;
                             } else {
@@ -406,9 +406,12 @@ function Anime2() {  // Выполнение анимации компонент
                         }
 
                         if (Valve[Canal[Pour].Bout[Pour2].Lequel].Modele == 'Check_valve') {
-                            if (Valve[Canal[Pour].Bout[Pour2].Lequel].Etat_Ext[1] == 0) {
-                                Valve[Canal[Pour].Bout[Pour2].Lequel].Position = 1;
-                            } else { Valve[Canal[Pour].Bout[Pour2].Lequel].Position = 2 };
+                            if (Canal[Pour].Bout[Pour2].Branchement == 1) {
+                                Valve[Canal[Pour].Bout[Pour2].Lequel].Alim_Exhaust[1] = 3;
+                            } else { 
+                                Valve[Canal[Pour].Bout[Pour2].Lequel].Alim_Exhaust[2] = 3;
+                                Valve[Canal[Pour].Bout[Pour2].Lequel].Alim_Exhaust[1] = 3;
+                            }
                         }
                     }
                 }
@@ -485,7 +488,7 @@ function Anime2() {  // Выполнение анимации компонент
 
                     if (Canal[Pour].Bout[Pour2].Quoi == 'Un_Valve') {
                         Valve[Canal[Pour].Bout[Pour2].Lequel].Etat_Ext[Canal[Pour].Bout[Pour2].Branchement] = Canal[Pour].Etat;
-                        if (Valve[Canal[Pour].Bout[Pour2].Lequel].Position == 1) {
+                        if (Valve[Canal[Pour].Bout[Pour2].Lequel].Position == 1 && Valve[Canal[Pour].Bout[Pour2].Lequel].Modele == 'Shutoff_valve') {
                             if (Canal[Pour].Bout[Pour2].Branchement == 1) {
                                 Valve[Canal[Pour].Bout[Pour2].Lequel].Etat_Ext[2] = Canal[Pour].Etat;
                             } else {
@@ -493,9 +496,15 @@ function Anime2() {  // Выполнение анимации компонент
                             }
                         }
                         if (Valve[Canal[Pour].Bout[Pour2].Lequel].Modele == 'Check_valve') {
-                            if (Valve[Canal[Pour].Bout[Pour2].Lequel].Etat_Ext[1] == 0) {
+                            if (Canal[Pour].Bout[Pour2].Branchement == 1) {
+                                Valve[Canal[Pour].Bout[Pour2].Lequel].Etat_Ext[1] = 0;
                                 Valve[Canal[Pour].Bout[Pour2].Lequel].Position = 1;
-                            } else { Valve[Canal[Pour].Bout[Pour2].Lequel].Position = 2 };
+                            } else { 
+                                Valve[Canal[Pour].Bout[Pour2].Lequel].Etat_Ext[2] = 0;
+                                Valve[Canal[Pour].Bout[Pour2].Lequel].Etat_Ext[1] = 0;
+                            }
+
+
                         }
                     }
                 }
@@ -548,7 +557,7 @@ function Anime2() {  // Выполнение анимации компонент
             }
         }
         //Присвоение силовому каналу состояния работа на выходе из компонента
-        for (let Pour = 1; Pour <= Nb_Canal; Pour++) {          
+        for (let Pour = 1; Pour <= Nb_Canal; Pour++) {
 
             for (let Pour2 = 1; Pour2 <= 2; Pour2++) {
                 if (Canal[Pour].Bout[Pour2].Quoi == 'Un_D') {
@@ -556,7 +565,7 @@ function Anime2() {  // Выполнение анимации компонент
                         Canal[Pour].Etat = Distributeur[Canal[Pour].Bout[Pour2].Lequel].Etat_Ext[Canal[Pour].Bout[Pour2].Branchement]
                     }
                 }
-            
+
                 if (Canal[Pour].Bout[Pour2].Quoi == 'Un_Carrefour') {
                     if ([Zero].includes(Carrefour[Canal[Pour].Bout[Pour2].Lequel].Etat)) {
                         Canal[Pour].Etat = Carrefour[Canal[Pour].Bout[Pour2].Lequel].Etat;
@@ -574,7 +583,7 @@ function Anime2() {  // Выполнение анимации компонент
                         Canal[Pour].Etat = Valve[Canal[Pour].Bout[Pour2].Lequel].Etat_Ext[Canal[Pour].Bout[Pour2].Branchement]
                     }
                 }
-            }    
+            }
         }
     }
 
@@ -606,7 +615,7 @@ function Anime2() {  // Выполнение анимации компонент
                         Carrefour[Canal[Pour].Bout[Pour2].Lequel].Etat = Canal[Pour].Etat;
 
                     }
-                
+
                     if (Canal[Pour].Bout[Pour2].Quoi == 'Un_Manometr') {
                         Manometr[Canal[Pour].Bout[Pour2].Lequel].Etat = Canal[Pour].Etat;
 
@@ -614,31 +623,31 @@ function Anime2() {  // Выполнение анимации компонент
                         Manometr[Canal[Pour].Bout[Pour2].Lequel].View = 1;
                     }
 
-        /*for (let Pour = 1; Pour <= Nb_Canal; Pour++) {
-            if ([Bouche, Un].includes(Canal[Pour].Etat)) {
-                for (Pour2 = 1; Pour2 <= 2; Pour2++) {
-                    if (Canal[Pour].Bout[Pour2].Quoi == 'Un_Exhaust') {
-                        Exhaust[Canal[Pour].Bout[Pour2].Lequel].Alim_Exhaust = Canal[Pour].Alim_Exhaust;
-                    }
-                }
-            }
-        }*/
+                    /*for (let Pour = 1; Pour <= Nb_Canal; Pour++) {
+                        if ([Bouche, Un].includes(Canal[Pour].Etat)) {
+                            for (Pour2 = 1; Pour2 <= 2; Pour2++) {
+                                if (Canal[Pour].Bout[Pour2].Quoi == 'Un_Exhaust') {
+                                    Exhaust[Canal[Pour].Bout[Pour2].Lequel].Alim_Exhaust = Canal[Pour].Alim_Exhaust;
+                                }
+                            }
+                        }
+                    }*/
 
-                
+
                     if (Canal[Pour].Bout[Pour2].Quoi == 'Un_D') {
                         if (Canal[Pour].Bout[Pour2].Branchement == 1) {
                             Distributeur[Canal[Pour].Bout[Pour2].Lequel].Etat_Ext[Canal[Pour].Bout[Pour2].Branchement] = Canal[Pour].Etat;
                         }
                     }
-                
+
                     if (Canal[Pour].Bout[Pour2].Quoi == 'Un_V') {
                         Verin[Canal[Pour].Bout[Pour2].Lequel].Etat_Ext[Canal[Pour].Bout[Pour2].Branchement] = Canal[Pour].Etat;
                     }
-                
+
                     if (Canal[Pour].Bout[Pour2].Quoi == 'Un_Valve') {
                         Valve[Canal[Pour].Bout[Pour2].Lequel].Etat_Ext[Canal[Pour].Bout[Pour2].Branchement] = Canal[Pour].Etat;
 
-                        if (Valve[Canal[Pour].Bout[Pour2].Lequel].Position == 1) {  //Если кран открыт, то присваивается 1 входу и выходу крана
+                        if (Valve[Canal[Pour].Bout[Pour2].Lequel].Position == 1 && Valve[Canal[Pour].Bout[Pour2].Lequel].Modele == 'Shutoff_valve') {  //Если кран открыт, то присваивается 1 входу и выходу крана
                             if (Canal[Pour].Bout[Pour2].Branchement == 1) {
                                 Valve[Canal[Pour].Bout[Pour2].Lequel].Etat_Ext[2] = 1;
                             } else {
@@ -649,7 +658,10 @@ function Anime2() {  // Выполнение анимации компонент
                         if (Valve[Canal[Pour].Bout[Pour2].Lequel].Modele == 'Check_valve') {
                             if (Valve[Canal[Pour].Bout[Pour2].Lequel].Etat_Ext[1] == 0) {
                                 Valve[Canal[Pour].Bout[Pour2].Lequel].Position = 1;
-                            } else { Valve[Canal[Pour].Bout[Pour2].Lequel].Position = 2 };
+                            } else {
+                                Valve[Canal[Pour].Bout[Pour2].Lequel].Position = 2;
+                                Valve[Canal[Pour].Bout[Pour2].Lequel].Etat_Ext[2] = 1;   
+                            }
                         }
                     }
                 }
@@ -730,21 +742,21 @@ function Anime2() {  // Выполнение анимации компонент
                         Canal[Pour].Etat = Distributeur[Canal[Pour].Bout[Pour2].Lequel].Etat_Ext[Canal[Pour].Bout[Pour2].Branchement];
                     }
                 }
-            
 
-            
+
+
                 if (Canal[Pour].Bout[Pour2].Quoi == 'Un_Carrefour') {
                     if ([Bouche, Un].includes(Carrefour[Canal[Pour].Bout[Pour2].Lequel].Etat)) {
                         Canal[Pour].Etat = Carrefour[Canal[Pour].Bout[Pour2].Lequel].Etat;
                     }
                 }
-            
+
                 if (Canal[Pour].Bout[Pour2].Quoi == 'Un_Manometr') {
                     if ([Bouche, Un].includes(Manometr[Canal[Pour].Bout[Pour2].Lequel].Etat)) {
                         Canal[Pour].Etat = Manometr[Canal[Pour].Bout[Pour2].Lequel].Etat;
                     }
                 }
-            
+
                 if (Canal[Pour].Bout[Pour2].Quoi == 'Un_Valve') {
                     if ([Bouche, Un].includes(Valve[Canal[Pour].Bout[Pour2].Lequel].Etat_Ext[Canal[Pour].Bout[Pour2].Branchement])) {
                         Canal[Pour].Etat = Valve[Canal[Pour].Bout[Pour2].Lequel].Etat_Ext[Canal[Pour].Bout[Pour2].Branchement];
@@ -782,7 +794,7 @@ function Anime2() {  // Выполнение анимации компонент
 
                     if (Canal[Pour].Bout[Pour2].Quoi == 'Un_Valve') {
                         Valve[Canal[Pour].Bout[Pour2].Lequel].Alim_Exhaust[Canal[Pour].Bout[Pour2].Branchement] = Canal[Pour].Alim_Exhaust;
-                        if (Valve[Canal[Pour].Bout[Pour2].Lequel].Position == 1) {  //Если кран открыт, то присваивается 1 входу и выходу крана
+                        if (Valve[Canal[Pour].Bout[Pour2].Lequel].Position == 1 && Valve[Canal[Pour].Bout[Pour2].Lequel].Modele == 'Shutoff_valve') {  //Если кран открыт, то присваивается 1 входу и выходу крана
                             if (Canal[Pour].Bout[Pour2].Branchement == 1) {
                                 Valve[Canal[Pour].Bout[Pour2].Lequel].Alim_Exhaust[2] = 1;
                             } else {
@@ -791,9 +803,11 @@ function Anime2() {  // Выполнение анимации компонент
                         }
 
                         if (Valve[Canal[Pour].Bout[Pour2].Lequel].Modele == 'Check_valve') {
-                            if (Valve[Canal[Pour].Bout[Pour2].Lequel].Etat_Ext[1] == 0) {
-                                Valve[Canal[Pour].Bout[Pour2].Lequel].Position = 1;
-                            } else { Valve[Canal[Pour].Bout[Pour2].Lequel].Position = 2 };
+                            if (Canal[Pour].Bout[Pour2].Branchement == 1) {
+                                Valve[Canal[Pour].Bout[Pour2].Lequel].Alim_Exhaust[2] = 1;
+                            } else { 
+                                Valve[Canal[Pour].Bout[Pour2].Lequel].Alim_Exhaust[2] = 1;
+                            }
                         }
                     }
                 }
