@@ -23,11 +23,11 @@ function RAZ1Click2() {  //Функция изменить положение
                 case '_5_2':
                 case '_2_2':
                 case '_2_2_':
-                    Distributeur[Pour].Etat = Max((Distributeur[Pour].Etat + 1) % 3, 1);
+                    Distributeur[Pour].Position = Max((Distributeur[Pour].Position + 1) % 3, 1);
                     break;
                 case '_4_3':
                 case '_5_3':
-                    Distributeur[Pour].Etat = Max((Distributeur[Pour].Etat + 1) % 4, 1);
+                    Distributeur[Pour].Position = Max((Distributeur[Pour].Position + 1) % 4, 1);
                     break;
             }
             break;
@@ -146,7 +146,7 @@ function Anime2() {  // Выполнение анимации компонент
         switch (L_Action) {
             case 'Un_D':
                 if ((Distributeur[Celui_La].Com[1].Quoi == 'Poussoir_Gauche') && (['Ressort_Droit', 'Scie_Droite'].includes(Distributeur[Celui_La].Com[2].Quoi))) {
-                    Place_Distributeur_a(Celui_La, 3 - Distributeur[Celui_La].Etat)
+                    Place_Distributeur_a(Celui_La, 3 - Distributeur[Celui_La].Position)
                 };
                 break;
             case 'Un_Cap':
@@ -352,15 +352,6 @@ function Anime2() {  // Выполнение анимации компонент
                 Canal[Pour].Etat = Zero;
                 Canal[Pour].Alim_Exhaust = 3;   //Проверка на соединение с выходом
                 Canal[Pour].Pressure = 0;
-
-                /*for (Pour3 = 1; Pour3 <= Nb_Exhaust; Pour3++) {
-                    for (Pour4 = 1; Pour4 <= Canal[Pour].NbPoint; Pour4++) {
-                        if (Canal[Pour].ParcoursX[Pour4] == Exhaust[Pour3].X && Canal[Pour].ParcoursY[Pour4] == Exhaust[Pour3].Y && Exhaust[Pour3].Alim_Exhaust == Zero) {
-                            Canal[Pour].Etat = Zero;
-                            Canal[Pour].Pressure = Zero;
-                        }
-                    }
-                }*/
             }
         }
     }
@@ -408,7 +399,7 @@ function Anime2() {  // Выполнение анимации компонент
                         if (Valve[Canal[Pour].Bout[Pour2].Lequel].Modele == 'Check_valve') {
                             if (Canal[Pour].Bout[Pour2].Branchement == 1) {
                                 Valve[Canal[Pour].Bout[Pour2].Lequel].Alim_Exhaust[1] = 3;
-                            } else { 
+                            } else {
                                 Valve[Canal[Pour].Bout[Pour2].Lequel].Alim_Exhaust[2] = 3;
                                 Valve[Canal[Pour].Bout[Pour2].Lequel].Alim_Exhaust[1] = 3;
                             }
@@ -499,7 +490,7 @@ function Anime2() {  // Выполнение анимации компонент
                             if (Canal[Pour].Bout[Pour2].Branchement == 1) {
                                 Valve[Canal[Pour].Bout[Pour2].Lequel].Etat_Ext[1] = 0;
                                 Valve[Canal[Pour].Bout[Pour2].Lequel].Position = 1;
-                            } else { 
+                            } else {
                                 Valve[Canal[Pour].Bout[Pour2].Lequel].Etat_Ext[2] = 0;
                                 Valve[Canal[Pour].Bout[Pour2].Lequel].Etat_Ext[1] = 0;
                             }
@@ -527,7 +518,7 @@ function Anime2() {  // Выполнение анимации компонент
 
         for (let Pour = 1; Pour <= Nb_Distributeur; Pour++) {
             if (!(['_4_3', '_5_3'].includes(Distributeur[Pour].Modele))) {
-                switch (Distributeur[Pour].Etat) {
+                switch (Distributeur[Pour].Position) {
                     case 1:
                         Distributeur[Pour].Etat_Ext[3] = Distributeur[Pour].Etat_Ext[1];
                         if (Distributeur[Pour].Modele == '_2_2_') { Distributeur[Pour].Etat_Ext[4] = Distributeur[Pour].Etat_Ext[1] }
@@ -541,7 +532,7 @@ function Anime2() {  // Выполнение анимации компонент
                 }
             } else {
 
-                switch (Distributeur[Pour].Etat) {
+                switch (Distributeur[Pour].Position) {
 
                     case 1:
                         Distributeur[Pour].Etat_Ext[3] = Bouche;
@@ -586,6 +577,18 @@ function Anime2() {  // Выполнение анимации компонент
             }
         }
     }
+
+
+
+    //Отладка
+    for (let Pour = 1; Pour <= Nb_Distributeur; Pour++) {
+        for (Pour2 = -1; Pour2 <= 5; Pour2++) {
+            console.log("№", Pour2 , "Etat_Ext", Distributeur[Pour].Etat_Ext[Pour2] , "Alim_Exhaust", Distributeur[Pour].Alim_Exhaust[Pour2]);
+        }
+    }
+    alert("Путь от выхода");
+
+
 
     //*********************** Силовая линия (путь от источника - Alim) ************************
     for (let Pour = 1; Pour <= Nb_Canal; Pour++) {
@@ -635,8 +638,11 @@ function Anime2() {  // Выполнение анимации компонент
 
 
                     if (Canal[Pour].Bout[Pour2].Quoi == 'Un_D') {
-                        if (Canal[Pour].Bout[Pour2].Branchement == 1) {
-                            Distributeur[Canal[Pour].Bout[Pour2].Lequel].Etat_Ext[Canal[Pour].Bout[Pour2].Branchement] = Canal[Pour].Etat;
+                        if (Distributeur[Canal[Pour].Bout[Pour2].Lequel].Position == 2) {
+                            if (Canal[Pour].Bout[Pour2].Branchement == 1) {
+                                Distributeur[Canal[Pour].Bout[Pour2].Lequel].Etat_Ext[Canal[Pour].Bout[Pour2].Branchement] = Canal[Pour].Etat;
+
+                            }
                         }
                     }
 
@@ -660,7 +666,7 @@ function Anime2() {  // Выполнение анимации компонент
                                 Valve[Canal[Pour].Bout[Pour2].Lequel].Position = 1;
                             } else {
                                 Valve[Canal[Pour].Bout[Pour2].Lequel].Position = 2;
-                                Valve[Canal[Pour].Bout[Pour2].Lequel].Etat_Ext[2] = 1;   
+                                Valve[Canal[Pour].Bout[Pour2].Lequel].Etat_Ext[2] = 1;
                             }
                         }
                     }
@@ -689,46 +695,46 @@ function Anime2() {  // Выполнение анимации компонент
 
         for (let Pour = 1; Pour <= Nb_Distributeur; Pour++) {
             if (!(['_4_3', '_5_3'].includes(Distributeur[Pour].Modele))) {
-                switch (Distributeur[Pour].Etat) {
+                switch (Distributeur[Pour].Position) {
                     case 1:
                         Distributeur[Pour].Etat_Ext[3] = Distributeur[Pour].Etat_Ext[1];
-                        Distributeur[Pour].Alim_Exhaust[3] = Distributeur[Pour].Alim_Exhaust[1];
+
                         if (Distributeur[Pour].Modele == '_2_2_') {
                             Distributeur[Pour].Etat_Ext[4] = Distributeur[Pour].Etat_Ext[1];
-                            Distributeur[Pour].Alim_Exhaust[4] = Distributeur[Pour].Alim_Exhaust[1];
+
                         }
                         if (Distributeur[Pour].Modele == '_2_2') {
-                            Distributeur[Pour].Etat_Ext[4] = Bouche;
-                            Distributeur[Pour].Alim_Exhaust[4] = Un;   //Проверить
+                            Distributeur[Pour].Etat_Ext[4] = Zero;
+
                         }
                         break;
                     case 2:
                         if (!(Distributeur[Pour].Modele == '_2_2_')) {
                             Distributeur[Pour].Etat_Ext[4] = Distributeur[Pour].Etat_Ext[1];
-                            Distributeur[Pour].Alim_Exhaust[4] = Distributeur[Pour].Alim_Exhaust[1];
+
                         } else {
-                            Distributeur[Pour].Etat_Ext[4] = Bouche;
-                            Distributeur[Pour].Alim_Exhaust[4] = Un;   //Проверить
+                            Distributeur[Pour].Etat_Ext[4] = Zero;
+
                         }
                         break;
                 }
             } else {
 
-                switch (Distributeur[Pour].Etat) {
+                switch (Distributeur[Pour].Position) {
 
                     case 1:
-                        Distributeur[Pour].Etat_Ext[3] = Bouche;
-                        Distributeur[Pour].Alim_Exhaust[3] = Un;   //Проверить
-                        Distributeur[Pour].Etat_Ext[4] = Bouche;
-                        Distributeur[Pour].Alim_Exhaust[4] = Un;    //Проверить
+                        Distributeur[Pour].Etat_Ext[3] = Zero;
+
+                        Distributeur[Pour].Etat_Ext[4] = Zero;
+
                         break;
                     case 2:
                         Distributeur[Pour].Etat_Ext[4] = Distributeur[Pour].Etat_Ext[1];
-                        Distributeur[Pour].Alim_Exhaust[4] = Distributeur[Pour].Alim_Exhaust[1];
+
                         break;
                     case 3:
                         Distributeur[Pour].Etat_Ext[3] = Distributeur[Pour].Etat_Ext[1];
-                        Distributeur[Pour].Alim_Exhaust[3] = Distributeur[Pour].Alim_Exhaust[1];
+
                         break;
                 }
             }
@@ -805,7 +811,7 @@ function Anime2() {  // Выполнение анимации компонент
                         if (Valve[Canal[Pour].Bout[Pour2].Lequel].Modele == 'Check_valve') {
                             if (Canal[Pour].Bout[Pour2].Branchement == 1) {
                                 Valve[Canal[Pour].Bout[Pour2].Lequel].Alim_Exhaust[2] = 1;
-                            } else { 
+                            } else {
                                 Valve[Canal[Pour].Bout[Pour2].Lequel].Alim_Exhaust[2] = 1;
                             }
                         }
@@ -845,9 +851,13 @@ function Anime2() {  // Выполнение анимации компонент
             }
         }
     }
-
-
-
+    //Отладка
+    for (let Pour = 1; Pour <= Nb_Distributeur; Pour++) {
+        for (Pour2 = -1; Pour2 <= 5; Pour2++) {
+            console.log("№", Pour2 , "Etat_Ext", Distributeur[Pour].Etat_Ext[Pour2] , "Alim_Exhaust", Distributeur[Pour].Alim_Exhaust[Pour2]);
+        }
+    }
+    alert("Путь от источника");
 
     //*********************** Присвоение каналам cиловой линии (в изолированных участках) состояния Etat = Bof  ************************
     for (let Pour = 1; Pour <= Nb_Canal; Pour++) {
@@ -952,8 +962,8 @@ function Place_Capteur_a(Numero, Combien) {
 //Поместите дозатор
 function Place_Distributeur_a(Numero, Combien) {
     Affiche_Distributeur(Numero, '#FFFFFF', false);
-    Distributeur[Numero].Etat = Combien;
-    Commande[Distributeur[Numero].Com[1].Laquelle].Etat = Distributeur[Numero].Etat;
-    Commande[Distributeur[Numero].Com[2].Laquelle].Etat = Distributeur[Numero].Etat;
+    Distributeur[Numero].Position = Combien;
+    Commande[Distributeur[Numero].Com[1].Laquelle].Etat = Distributeur[Numero].Position;
+    Commande[Distributeur[Numero].Com[2].Laquelle].Etat = Distributeur[Numero].Position;
     Affiche_Distributeur(Numero, '#000000', false);
 }

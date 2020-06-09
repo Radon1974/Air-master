@@ -759,7 +759,7 @@ function Cree_Distributeur(XC, YC, Modelec, Commande1, Commande2, L_Etat) {
   }
 
   Distributeur[Nb_Distributeur].Modele = Modelec;
-  Distributeur[Nb_Distributeur].Etat = L_Etat;
+  Distributeur[Nb_Distributeur].Position = L_Etat;
 
   Cree_Commande(Distributeur[Nb_Distributeur].X, Distributeur[Nb_Distributeur].Y, Commande1);
   Commande[Nb_Commande].Etat = L_Etat;
@@ -902,7 +902,7 @@ function Affiche_Distributeur(Numero, C, Blanc) {
   if (!Blanc) { Couleur(C) } else { Couleur('#000000') } //Черный
   Couleur(C);
 
-  if (Distributeur[Numero].Etat == 1) { XDeca = 0 } else { if (Distributeur[Numero].Etat == 2) { XDeca = DLargeur } else { if (Distributeur[Numero].Etat == 3) { XDeca = -DLargeur } } }
+  if (Distributeur[Numero].Position == 1) { XDeca = 0 } else { if (Distributeur[Numero].Position == 2) { XDeca = DLargeur } else { if (Distributeur[Numero].Position == 3) { XDeca = -DLargeur } } }
   switch (Distributeur[Numero].Modele) {
     case '_3_2':
       Carre_Haut_Stop(Distributeur[Numero].X + XDeca, Distributeur[Numero].Y);
@@ -976,14 +976,14 @@ function Affiche_Distributeur(Numero, C, Blanc) {
     }
   }
 
-  Affiche_Commande(Distributeur[Numero].Com[1].Laquelle, C, Blanc, XDeca, Distributeur[Numero].Etat);
-  Affiche_Commande(Distributeur[Numero].Com[2].Laquelle, C, Blanc, XDeca, Distributeur[Numero].Etat);
+  Affiche_Commande(Distributeur[Numero].Com[1].Laquelle, C, Blanc, XDeca, Distributeur[Numero].Position);
+  Affiche_Commande(Distributeur[Numero].Com[2].Laquelle, C, Blanc, XDeca, Distributeur[Numero].Position);
 
   Couleur(C);
   if ((Distributeur[Numero].Modele == '_4_3') || (Distributeur[Numero].Modele == '_5_3')) {
-    if (Distributeur[Numero].Etat == 3) { Affiche_Ressort(Distributeur[Numero].X - DLargeur / 4 + XDeca, Distributeur[Numero].Y + DLargeur / 3, Distributeur[Numero].X + XDeca, DLargeur / 4, true) }
+    if (Distributeur[Numero].Position == 3) { Affiche_Ressort(Distributeur[Numero].X - DLargeur / 4 + XDeca, Distributeur[Numero].Y + DLargeur / 3, Distributeur[Numero].X + XDeca, DLargeur / 4, true) }
     else { Affiche_Ressort(Distributeur[Numero].X - DLargeur + XDeca, Distributeur[Numero].Y + DLargeur / 3, Distributeur[Numero].X + XDeca, DLargeur / 4, true) }
-    if (Distributeur[Numero].Etat == 2) { Affiche_Ressort(Distributeur[Numero].X + 3 * DLargeur + XDeca, Distributeur[Numero].Y + DLargeur / 3, Distributeur[Numero].X + 3 * DLargeur + DLargeur / 4 + XDeca, DLargeur / 4, true) }
+    if (Distributeur[Numero].Position == 2) { Affiche_Ressort(Distributeur[Numero].X + 3 * DLargeur + XDeca, Distributeur[Numero].Y + DLargeur / 3, Distributeur[Numero].X + 3 * DLargeur + DLargeur / 4 + XDeca, DLargeur / 4, true) }
     else { Affiche_Ressort(Distributeur[Numero].X + 3 * DLargeur + XDeca, Distributeur[Numero].Y + DLargeur / 3, Distributeur[Numero].X + 3 * DLargeur + DLargeur + XDeca, DLargeur / 4, true) }
   }
 
